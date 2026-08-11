@@ -297,7 +297,6 @@ export default function Home() {
                 </WhatsAppLink>
                 <a className="button button-ghost" href="#servicos">Conhecer soluções <span aria-hidden="true">↓</span></a>
               </div>
-              <p className="hero-note"><span /> Conte sua ideia. A primeira conversa é sem compromisso.</p>
             </m.div>
 
             <m.div
