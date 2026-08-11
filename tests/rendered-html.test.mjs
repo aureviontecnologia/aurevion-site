@@ -35,8 +35,9 @@ test("server-renders the Aurevion conversion landing page", async () => {
   assert.match(html, /Sites &amp; landing pages/i);
   assert.match(html, /Soluções em destaque/i);
   assert.doesNotMatch(html, /Nota de transparência/i);
-  assert.match(html, /aurevion-higgs-01\.webp/i);
-  assert.match(html, /aurevion-higgs-04\.webp/i);
+  assert.match(html, /Interface demonstrativa · presença digital/i);
+  assert.match(html, /Visão operacional/i);
+  assert.doesNotMatch(html, /aurevion-higgs|Higgsfield/i);
   assert.match(html, /5527920026247/);
   assert.doesNotMatch(html, /codex-preview|Your site is taking shape|Building your site/i);
 });
@@ -53,6 +54,8 @@ test("keeps accessibility, motion and starter cleanup explicit", async () => {
   assert.match(page, /aria-label="Navegação principal"/);
   assert.match(page, /id="mobile-navigation"/);
   assert.match(page, /useReducedMotion/);
+  assert.match(page, /function ProjectVisual/);
+  assert.doesNotMatch(page, /project\.image|aurevion-higgs|Higgsfield/i);
   assert.doesNotMatch(page, /ThemeGlyph|theme-toggle|aurevion-theme|data-theme/);
   assert.match(layout, /lang="pt-BR"/);
   assert.match(layout, /themeColor:\s*"#07101a"/);

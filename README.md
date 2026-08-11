@@ -1,6 +1,6 @@
 # Aurevion
 
-Landing page institucional e de conversão da Aurevion, construída com React, Vinext, CSS responsivo, Motion, uma composição audiovisual criada em Remotion e uma direção visual gerada no Higgsfield AI.
+Landing page institucional e de conversão da Aurevion, construída com React, Vinext, CSS responsivo, Motion e uma composição audiovisual criada em Remotion.
 
 Repositório público: https://github.com/albertocodexx/aurevion-site
 
@@ -33,9 +33,8 @@ O conteúdo fica em `app/page.tsx`. Os arrays `services`, `projects` e `principl
 - `public/og.png`: imagem de compartilhamento social
 - `public/aurevion-hero.mp4`: composição audiovisual do hero
 - `public/aurevion-hero-poster.png`: poster exibido antes do vídeo carregar
-- `public/aurevion-higgsfield.webp`: visual conceitual 16:9 gerado no Higgsfield AI
 
-Mantenha a proporção do logo. Para novas imagens, use WebP/AVIF quando possível, dimensões explícitas e carregamento lazy fora do primeiro viewport.
+Mantenha a proporção do logo. As demonstrações da seção de projetos são interfaces em HTML/CSS e podem ser personalizadas em `app/page.tsx` e `app/globals.css`.
 
 ### Analytics
 

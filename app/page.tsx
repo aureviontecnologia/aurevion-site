@@ -56,8 +56,6 @@ const projects = [
     tags: ["Web design", "Conversão"],
     kind: "website",
     theme: "navy",
-    image: "/aurevion-higgs-01.webp",
-    alt: "Instalação editorial em vidro e metal representando uma presença digital premium",
   },
   {
     title: "Atendimento inteligente",
@@ -66,8 +64,6 @@ const projects = [
     tags: ["Automação", "IA"],
     kind: "automation",
     theme: "sand",
-    image: "/aurevion-higgs-02.webp",
-    alt: "Composição editorial de luz e materiais técnicos representando automação inteligente",
   },
   {
     title: "Operação em um só lugar",
@@ -76,8 +72,6 @@ const projects = [
     tags: ["Sistema", "Dashboard"],
     kind: "dashboard",
     theme: "ice",
-    image: "/aurevion-higgs-03.webp",
-    alt: "Estrutura arquitetônica modular representando um sistema sob medida",
   },
   {
     title: "Jornada integrada",
@@ -86,8 +80,6 @@ const projects = [
     tags: ["Integrações", "Produto digital"],
     kind: "integration",
     theme: "charcoal",
-    image: "/aurevion-higgs-04.webp",
-    alt: "Conexões físicas em uma instalação de estúdio representando uma jornada integrada",
   },
 ] as const;
 
@@ -168,6 +160,89 @@ function ServiceGlyph({ kind }: { kind: (typeof services)[number]["icon"] }) {
   }
 
   return <svg {...common}><path d="M9.4 14.6 14.6 9.4" /><path d="M7.1 17H6a4 4 0 0 1 0-8h3M17 7h1a4 4 0 1 1 0 8h-3" /><path d="M8 12h8" /></svg>;
+}
+
+function ProjectVisual({ kind }: { kind: (typeof projects)[number]["kind"] }) {
+  if (kind === "website") {
+    return (
+      <figure className="project-visual visual-website">
+        <div className="system-window website-window" aria-hidden="true">
+          <div className="system-window-bar">
+            <span className="window-dots"><i /><i /><i /></span>
+            <small>aurevion.digital</small>
+          </div>
+          <div className="website-preview-nav"><strong>AUREVION</strong><span>ESTRATÉGIA · DESIGN · CÓDIGO</span></div>
+          <div className="website-preview-body">
+            <p>EXPERIÊNCIA DIGITAL</p>
+            <h3>Ideias que<br />ganham direção.</h3>
+            <span className="website-preview-cta">Começar projeto</span>
+          </div>
+          <div className="website-preview-status"><span>JORNADA CONECTADA</span><strong>Site + WhatsApp</strong></div>
+        </div>
+        <figcaption>Interface demonstrativa · presença digital</figcaption>
+      </figure>
+    );
+  }
+
+  if (kind === "automation") {
+    return (
+      <figure className="project-visual visual-automation">
+        <div className="automation-canvas" aria-hidden="true">
+          <div className="system-kicker"><span /> FLUXO DEMONSTRATIVO</div>
+          <div className="flow-node flow-start"><small>ENTRADA</small><strong>Novo contato</strong><span>Formulário ou WhatsApp</span></div>
+          <div className="flow-connector flow-connector-one" />
+          <div className="flow-node flow-ai"><small>ORGANIZAÇÃO</small><strong>Regras + IA</strong><span>Classificação da demanda</span></div>
+          <div className="flow-connector flow-connector-two" />
+          <div className="flow-node flow-end"><small>DESTINO</small><strong>Próximo passo</strong><span>CRM e atendimento</span></div>
+        </div>
+        <figcaption>Interface demonstrativa · automação de atendimento</figcaption>
+      </figure>
+    );
+  }
+
+  if (kind === "dashboard") {
+    return (
+      <figure className="project-visual visual-dashboard">
+        <div className="dashboard-shell" aria-hidden="true">
+          <aside>
+            <div className="dash-brand">A</div>
+            <span className="dash-nav-item is-current">Visão</span>
+            <span className="dash-nav-item">Fluxos</span>
+            <span className="dash-nav-item">Equipe</span>
+          </aside>
+          <div className="dash-main">
+            <div className="dash-head"><span>Visão operacional</span><small>HOJE</small></div>
+            <div className="dash-metrics">
+              <div><small>PROJETOS</small><strong>Em andamento</strong></div>
+              <div><small>ATENDIMENTO</small><strong>Organizado</strong></div>
+              <div><small>ENTREGAS</small><strong>Por etapa</strong></div>
+            </div>
+            <div className="dash-chart">
+              <div className="dash-chart-head"><span>Ritmo da operação</span><small>7 DIAS</small></div>
+              <div className="chart-bars"><i /><i /><i /><i /><i /><i /><i /></div>
+            </div>
+          </div>
+        </div>
+        <figcaption>Interface demonstrativa · painel sob medida</figcaption>
+      </figure>
+    );
+  }
+
+  return (
+    <figure className="project-visual visual-integration">
+      <div className="integration-canvas" aria-hidden="true">
+        <div className="integration-grid" />
+        <div className="integration-core"><span>A</span></div>
+        <div className="integration-node node-site"><small>01</small><strong>Site</strong></div>
+        <div className="integration-node node-crm"><small>02</small><strong>CRM</strong></div>
+        <div className="integration-node node-whatsapp"><small>03</small><strong>WhatsApp</strong></div>
+        <div className="integration-node node-data"><small>04</small><strong>Dados</strong></div>
+        <i className="integration-line line-site" /><i className="integration-line line-crm" />
+        <i className="integration-line line-whatsapp" /><i className="integration-line line-data" />
+      </div>
+      <figcaption>Interface demonstrativa · jornada integrada</figcaption>
+    </figure>
+  );
 }
 
 export default function Home() {
@@ -388,9 +463,7 @@ export default function Home() {
                   viewport={{ once: true, margin: "-80px" }}
                   transition={{ delay: index * 0.06 }}
                 >
-                  <figure className="project-visual">
-                    <img src={project.image} width="1280" height="720" loading="lazy" decoding="async" alt={project.alt} />
-                  </figure>
+                  <ProjectVisual kind={project.kind} />
                   <div className="project-info">
                     <div className="project-index">0{index + 1}</div>
                     <div className="project-copy">
