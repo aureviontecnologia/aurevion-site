@@ -33,10 +33,10 @@ test("server-renders the Aurevion conversion landing page", async () => {
   assert.match(html, /<title>Aurevion \| Sites, sistemas e automações sob medida<\/title>/i);
   assert.match(html, /Ideias ambiciosas merecem experiências digitais/i);
   assert.match(html, /Sites &amp; landing pages/i);
-  assert.match(html, /Possibilidades/i);
-  assert.match(html, /Nota de transparência/i);
-  assert.match(html, /aurevion-higgsfield\.webp/i);
-  assert.match(html, /Visual conceitual · Higgsfield AI/i);
+  assert.match(html, /Soluções em destaque/i);
+  assert.doesNotMatch(html, /Nota de transparência/i);
+  assert.match(html, /aurevion-higgs-01\.webp/i);
+  assert.match(html, /aurevion-higgs-04\.webp/i);
   assert.match(html, /5527920026247/);
   assert.doesNotMatch(html, /codex-preview|Your site is taking shape|Building your site/i);
 });
@@ -51,7 +51,8 @@ test("keeps accessibility, motion and starter cleanup explicit", async () => {
 
   assert.match(page, /MotionConfig reducedMotion="user"/);
   assert.match(page, /aria-label="Navegação principal"/);
-  assert.match(page, /prefers-color-scheme: dark/);
+  assert.match(page, /id="mobile-navigation"/);
+  assert.match(page, /useReducedMotion/);
   assert.match(layout, /lang="pt-BR"/);
   assert.match(layout, /application\/ld\+json/);
   assert.match(css, /prefers-reduced-motion:\s*reduce/);

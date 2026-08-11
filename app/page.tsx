@@ -1,11 +1,13 @@
 "use client";
 
-import { FormEvent, useEffect, useState } from "react";
+import { FormEvent, useEffect, useRef, useState } from "react";
 import {
+  AnimatePresence,
   LazyMotion,
   MotionConfig,
   domAnimation,
   m,
+  useReducedMotion,
   useScroll,
   useSpring,
 } from "motion/react";
@@ -21,24 +23,28 @@ const services = [
     title: "Sites & landing pages",
     text: "Experiências rápidas, responsivas e pensadas para apresentar sua marca com clareza e gerar novos contatos.",
     accent: "blue",
+    icon: "web",
   },
   {
     number: "02",
     title: "Sistemas sob medida",
     text: "Produtos digitais construídos em torno da sua operação, sem processos genéricos ou complexidade desnecessária.",
     accent: "gold",
+    icon: "system",
   },
   {
     number: "03",
     title: "Automação & IA",
     text: "Fluxos inteligentes para reduzir tarefas repetitivas, acelerar o atendimento e organizar oportunidades.",
     accent: "ink",
+    icon: "automation",
   },
   {
     number: "04",
     title: "Integrações & evolução",
     text: "Conectamos ferramentas, dados e canais para sua tecnologia acompanhar o crescimento do negócio.",
     accent: "slate",
+    icon: "integration",
   },
 ] as const;
 
@@ -50,6 +56,8 @@ const projects = [
     tags: ["Web design", "Conversão"],
     kind: "website",
     theme: "navy",
+    image: "/aurevion-higgs-01.webp",
+    alt: "Instalação editorial em vidro e metal representando uma presença digital premium",
   },
   {
     title: "Atendimento inteligente",
@@ -58,6 +66,8 @@ const projects = [
     tags: ["Automação", "IA"],
     kind: "automation",
     theme: "sand",
+    image: "/aurevion-higgs-02.webp",
+    alt: "Composição editorial de luz e materiais técnicos representando automação inteligente",
   },
   {
     title: "Operação em um só lugar",
@@ -66,6 +76,8 @@ const projects = [
     tags: ["Sistema", "Dashboard"],
     kind: "dashboard",
     theme: "ice",
+    image: "/aurevion-higgs-03.webp",
+    alt: "Estrutura arquitetônica modular representando um sistema sob medida",
   },
   {
     title: "Jornada integrada",
@@ -74,6 +86,8 @@ const projects = [
     tags: ["Integrações", "Produto digital"],
     kind: "integration",
     theme: "charcoal",
+    image: "/aurevion-higgs-04.webp",
+    alt: "Conexões físicas em uma instalação de estúdio representando uma jornada integrada",
   },
 ] as const;
 
@@ -112,79 +126,69 @@ function WhatsAppLink({
   className: string;
   location: string;
 }) {
+  const isPrimaryAction = className.includes("button");
+
   return (
-    <a
+    <m.a
       href={WHATSAPP_URL}
       target="_blank"
       rel="noreferrer"
       className={className}
       onClick={() => trackEvent("whatsapp_click", { location })}
+      whileHover={isPrimaryAction ? { y: -2 } : undefined}
+      whileTap={isPrimaryAction ? { scale: 0.985 } : undefined}
       aria-label={`${typeof children === "string" ? children : "Falar com a Aurevion"} (abre em nova aba)`}
     >
       {children}
-    </a>
+    </m.a>
   );
 }
 
-function ProjectVisual({ kind }: { kind: (typeof projects)[number]["kind"] }) {
-  if (kind === "website") {
-    return (
-      <figure className="higgsfield-visual">
-        <img
-          src="/aurevion-higgsfield.webp"
-          width="1280"
-          height="720"
-          loading="lazy"
-          decoding="async"
-          alt="Composição abstrata em azul-marinho e dourado criada para a Aurevion no Higgsfield AI"
-        />
-        <figcaption>Visual conceitual · Higgsfield AI</figcaption>
-      </figure>
-    );
+function ThemeGlyph({ mode }: { mode: "sun" | "moon" }) {
+  return mode === "moon" ? (
+    <svg viewBox="0 0 24 24" aria-hidden="true">
+      <path d="M20 15.2A8.4 8.4 0 0 1 8.8 4a8.5 8.5 0 1 0 11.2 11.2Z" />
+    </svg>
+  ) : (
+    <svg viewBox="0 0 24 24" aria-hidden="true">
+      <circle cx="12" cy="12" r="3.5" />
+      <path d="M12 2.5v2M12 19.5v2M4.6 4.6 6 6M18 18l1.4 1.4M2.5 12h2M19.5 12h2M4.6 19.4 6 18M18 6l1.4-1.4" />
+    </svg>
+  );
+}
+
+function ServiceGlyph({ kind }: { kind: (typeof services)[number]["icon"] }) {
+  const common = {
+    viewBox: "0 0 24 24",
+    fill: "none",
+    stroke: "currentColor",
+    strokeWidth: 1.6,
+    strokeLinecap: "round" as const,
+    strokeLinejoin: "round" as const,
+    "aria-hidden": true,
+  };
+
+  if (kind === "web") {
+    return <svg {...common}><rect x="2.5" y="4" width="19" height="16" rx="3" /><path d="M2.5 8.5h19" /><path d="M6 6.3h.01M9 6.3h.01" /></svg>;
+  }
+
+  if (kind === "system") {
+    return <svg {...common}><rect x="3" y="3" width="7.5" height="7.5" rx="2" /><rect x="13.5" y="3" width="7.5" height="7.5" rx="2" /><rect x="3" y="13.5" width="7.5" height="7.5" rx="2" /><path d="M14 17.2h7M17.5 13.7v7" /></svg>;
   }
 
   if (kind === "automation") {
-    return (
-      <div className="automation-canvas" aria-hidden="true">
-        <div className="automation-label">Fluxo ativo <span /></div>
-        <div className="flow-node flow-start"><i>01</i><span><b>Novo contato</b><small>WhatsApp</small></span></div>
-        <div className="flow-line line-one" />
-        <div className="flow-node flow-ai"><i>AI</i><span><b>Qualificar lead</b><small>Automação</small></span></div>
-        <div className="flow-line line-two" />
-        <div className="flow-node flow-end"><i>03</i><span><b>Próxima ação</b><small>CRM</small></span></div>
-      </div>
-    );
+    return <svg {...common}><circle cx="5" cy="6" r="2" /><circle cx="19" cy="7" r="2" /><circle cx="12" cy="18" r="2" /><path d="M7 6.2 17 6.8M6.2 7.7l4.7 8.5M17.8 8.7l-4.6 7.5" /></svg>;
   }
 
-  if (kind === "dashboard") {
-    return (
-      <div className="dashboard-shell" aria-hidden="true">
-        <aside><div className="dash-brand">A</div><i /><i /><i /><i /></aside>
-        <div className="dash-main">
-          <div className="dash-head"><span>Visão geral</span><b /></div>
-          <div className="dash-metrics"><i /><i /><i /></div>
-          <div className="dash-chart"><span>Performance</span><div className="chart-bars"><i /><i /><i /><i /><i /><i /><i /></div></div>
-        </div>
-      </div>
-    );
-  }
-
-  return (
-    <div className="integration-canvas" aria-hidden="true">
-      <div className="integration-core">A</div>
-      <div className="orbit orbit-one"><span>Site</span></div>
-      <div className="orbit orbit-two"><span>CRM</span></div>
-      <div className="orbit orbit-three"><span>IA</span></div>
-      <div className="orbit orbit-four"><span>Dados</span></div>
-      <i className="orbit-line l1" /><i className="orbit-line l2" />
-      <i className="orbit-line l3" /><i className="orbit-line l4" />
-    </div>
-  );
+  return <svg {...common}><path d="M9.4 14.6 14.6 9.4" /><path d="M7.1 17H6a4 4 0 0 1 0-8h3M17 7h1a4 4 0 1 1 0 8h-3" /><path d="M8 12h8" /></svg>;
 }
 
 export default function Home() {
   const [menuOpen, setMenuOpen] = useState(false);
   const [theme, setTheme] = useState<"light" | "dark">("light");
+  const menuButtonRef = useRef<HTMLButtonElement>(null);
+  const mobileNavRef = useRef<HTMLElement>(null);
+  const prefersReducedMotion = useReducedMotion();
   const { scrollYProgress } = useScroll();
   const smoothProgress = useSpring(scrollYProgress, {
     stiffness: 140,
@@ -194,8 +198,7 @@ export default function Home() {
 
   useEffect(() => {
     const savedTheme = window.localStorage.getItem("aurevion-theme");
-    const preferredDark = window.matchMedia("(prefers-color-scheme: dark)").matches;
-    const initialTheme = savedTheme === "dark" || (!savedTheme && preferredDark) ? "dark" : "light";
+    const initialTheme = savedTheme === "dark" ? "dark" : "light";
     const animationFrame = window.requestAnimationFrame(() => {
       setTheme(initialTheme);
       document.documentElement.dataset.theme = initialTheme;
@@ -203,6 +206,25 @@ export default function Home() {
 
     return () => window.cancelAnimationFrame(animationFrame);
   }, []);
+
+  useEffect(() => {
+    if (!menuOpen) return;
+
+    const focusFrame = window.requestAnimationFrame(() => {
+      mobileNavRef.current?.querySelector<HTMLAnchorElement>("a")?.focus();
+    });
+    const closeOnEscape = (event: KeyboardEvent) => {
+      if (event.key !== "Escape") return;
+      setMenuOpen(false);
+      menuButtonRef.current?.focus();
+    };
+
+    window.addEventListener("keydown", closeOnEscape);
+    return () => {
+      window.cancelAnimationFrame(focusFrame);
+      window.removeEventListener("keydown", closeOnEscape);
+    };
+  }, [menuOpen]);
 
   function toggleTheme() {
     const nextTheme = theme === "light" ? "dark" : "light";
@@ -247,38 +269,57 @@ export default function Home() {
             <span>AUREVION</span>
           </a>
 
-          <nav className={menuOpen ? "main-nav is-open" : "main-nav"} aria-label="Navegação principal">
-            <a href="#servicos" onClick={closeMenu}>Serviços</a>
-            <a href="#projetos" onClick={closeMenu}>Projetos</a>
-            <a href="#processo" onClick={closeMenu}>Como fazemos</a>
-            <a href="#contato" onClick={closeMenu}>Contato</a>
+          <nav className="main-nav desktop-nav" aria-label="Navegação principal">
+            <a href="#servicos">Serviços</a>
+            <a href="#projetos">Projetos</a>
+            <a href="#processo">Como fazemos</a>
+            <a href="#contato">Contato</a>
           </nav>
 
           <div className="header-actions">
-            <button className="theme-toggle" type="button" onClick={toggleTheme} aria-label={`Ativar modo ${theme === "light" ? "escuro" : "claro"}`}>
-              <span aria-hidden="true">{theme === "light" ? "◐" : "○"}</span>
-            </button>
+            <m.button className="theme-toggle" type="button" onClick={toggleTheme} whileTap={{ scale: 0.94 }} aria-label={`Ativar modo ${theme === "light" ? "escuro" : "claro"}`}>
+              <ThemeGlyph mode={theme === "light" ? "moon" : "sun"} />
+            </m.button>
             <WhatsAppLink className="button button-small button-gold header-cta" location="header">
               Falar no WhatsApp
             </WhatsAppLink>
-            <button
+            <m.button
+              ref={menuButtonRef}
               className={menuOpen ? "menu-toggle is-open" : "menu-toggle"}
               type="button"
               onClick={() => setMenuOpen((open) => !open)}
+              whileTap={{ scale: 0.94 }}
               aria-expanded={menuOpen}
               aria-controls="mobile-navigation"
               aria-label={menuOpen ? "Fechar menu" : "Abrir menu"}
             >
               <i /><i />
-            </button>
+            </m.button>
           </div>
         </div>
+        <AnimatePresence>
+          {menuOpen ? (
+            <m.nav
+              ref={mobileNavRef}
+              id="mobile-navigation"
+              className="mobile-nav"
+              aria-label="Navegação mobile"
+              initial={{ opacity: 0, y: -12 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -10 }}
+              transition={{ duration: 0.2 }}
+            >
+              <a href="#servicos" onClick={closeMenu}>Serviços</a>
+              <a href="#projetos" onClick={closeMenu}>Projetos</a>
+              <a href="#processo" onClick={closeMenu}>Como fazemos</a>
+              <a href="#contato" onClick={closeMenu}>Contato</a>
+            </m.nav>
+          ) : null}
+        </AnimatePresence>
       </header>
 
       <main id="conteudo">
         <section className="hero" id="inicio">
-          <div className="hero-glow hero-glow-one" aria-hidden="true" />
-          <div className="hero-glow hero-glow-two" aria-hidden="true" />
           <div className="hero-inner shell">
             <m.div
               className="hero-copy"
@@ -293,28 +334,25 @@ export default function Home() {
               </p>
               <div className="hero-actions">
                 <WhatsAppLink className="button button-primary" location="hero">
-                  Conversar no WhatsApp <span aria-hidden="true">↗</span>
+                  Conversar no WhatsApp
                 </WhatsAppLink>
-                <a className="button button-ghost" href="#servicos">Conhecer soluções <span aria-hidden="true">↓</span></a>
+                <m.a className="button button-ghost" href="#servicos" whileHover={{ y: -2 }} whileTap={{ scale: 0.985 }}>Conhecer soluções</m.a>
               </div>
             </m.div>
 
             <m.div
               className="hero-stage"
-              aria-label="Prévia de soluções digitais da Aurevion"
-              initial={{ opacity: 0, x: 30, scale: 0.97 }}
-              animate={{ opacity: 1, x: 0, scale: 1 }}
+              aria-label="Filme de marca da Aurevion"
+              initial={{ opacity: 0, y: 24, scale: 0.97 }}
+              animate={{ opacity: 1, y: 0, scale: 1 }}
               transition={{ duration: 0.78, delay: 0.2 }}
             >
-              <div className="stage-orbit orbit-large" aria-hidden="true" />
-              <div className="stage-orbit orbit-small" aria-hidden="true" />
-              <div className="stage-card stage-main">
-                <div className="stage-toolbar"><span><i /><i /><i /></span><small>aurevion.digital</small></div>
+              <div className="hero-media">
                 <video
                   className="hero-video"
-                  autoPlay
+                  autoPlay={!prefersReducedMotion}
                   muted
-                  loop
+                  loop={!prefersReducedMotion}
                   playsInline
                   preload="metadata"
                   poster="/aurevion-hero-poster.png"
@@ -322,16 +360,7 @@ export default function Home() {
                 >
                   <source src="/aurevion-hero.mp4" type="video/mp4" />
                 </video>
-              </div>
-              <div className="stage-card stage-metric">
-                <span>Experiência</span>
-                <strong>Premium</strong>
-                <div><i /><i /><i /><i /><i /></div>
-              </div>
-              <div className="stage-card stage-status">
-                <i />
-                <span><small>Projeto</small><strong>Em evolução</strong></span>
-                <b>↗</b>
+                <div className="hero-media-shade" aria-hidden="true" />
               </div>
             </m.div>
           </div>
@@ -361,12 +390,11 @@ export default function Home() {
                   key={service.number}
                   initial={{ opacity: 0, y: 24 }}
                   whileInView={{ opacity: 1, y: 0 }}
-                  whileHover={{ y: -6 }}
                   viewport={{ once: true, margin: "-70px" }}
                   transition={{ delay: Number(service.number) * 0.045 }}
                 >
-                  <div className="service-top"><span>{service.number}</span><i aria-hidden="true">↗</i></div>
-                  <div className="service-icon" aria-hidden="true"><i /><i /><i /></div>
+                  <div className="service-top"><span>{service.number}</span></div>
+                  <div className="service-icon"><ServiceGlyph kind={service.icon} /></div>
                   <h3>{service.title}</h3>
                   <p>{service.text}</p>
                 </m.article>
@@ -379,10 +407,10 @@ export default function Home() {
           <div className="shell">
             <div className="section-heading split-heading project-heading">
               <div>
-                <div className="eyebrow"><span /> Possibilidades</div>
-                <h2>Experiências que podemos<br />colocar em movimento.</h2>
+                <div className="eyebrow"><span /> Soluções em destaque</div>
+                <h2>Forma, função e direção<br />em cada experiência.</h2>
               </div>
-              <p>Exemplos conceituais de soluções, criados para mostrar o padrão de direção, cuidado e acabamento da Aurevion.</p>
+              <p>Quatro frentes que mostram como a Aurevion transforma objetivos de negócio em experiências digitais claras e bem construídas.</p>
             </div>
 
             <div className="projects-grid">
@@ -392,11 +420,12 @@ export default function Home() {
                   key={project.title}
                   initial={{ opacity: 0, y: 30 }}
                   whileInView={{ opacity: 1, y: 0 }}
-                  whileHover={{ y: -5 }}
                   viewport={{ once: true, margin: "-80px" }}
                   transition={{ delay: index * 0.06 }}
                 >
-                  <div className="project-visual"><ProjectVisual kind={project.kind} /></div>
+                  <figure className="project-visual">
+                    <img src={project.image} width="1280" height="720" loading="lazy" decoding="async" alt={project.alt} />
+                  </figure>
                   <div className="project-info">
                     <div className="project-index">0{index + 1}</div>
                     <div className="project-copy">
@@ -410,7 +439,6 @@ export default function Home() {
                 </m.article>
               ))}
             </div>
-            <p className="concept-note"><span>Nota de transparência</span> Estes projetos são demonstrações conceituais e não são apresentados como trabalhos contratados por clientes.</p>
           </div>
         </section>
 
@@ -420,15 +448,15 @@ export default function Home() {
               <div className="eyebrow eyebrow-light"><span /> Nosso jeito</div>
               <h2>Tecnologia que faz sentido.<br /><em>Do início ao próximo nível.</em></h2>
               <p>Menos ruído, mais direção. Você entende cada escolha e acompanha o projeto de perto.</p>
-              <WhatsAppLink className="text-link" location="diferenciais">Conhecer o próximo passo <span aria-hidden="true">↗</span></WhatsAppLink>
+              <WhatsAppLink className="text-link" location="diferenciais">Conhecer o próximo passo</WhatsAppLink>
             </div>
             <div className="principles-list">
               {principles.map((principle) => (
                 <m.article
                   className="principle-item"
                   key={principle.number}
-                  initial={{ opacity: 0, x: 24 }}
-                  whileInView={{ opacity: 1, x: 0 }}
+                  initial={{ opacity: 0, y: 20 }}
+                  whileInView={{ opacity: 1, y: 0 }}
                   viewport={{ once: true, margin: "-80px" }}
                 >
                   <span>{principle.number}</span>
@@ -447,11 +475,11 @@ export default function Home() {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true, margin: "-90px" }}
             >
-              <div className="trust-mark" aria-hidden="true">A</div>
+              <div className="trust-mark" aria-hidden="true"><img src="/aurevion-symbol.png" alt="" width="96" height="96" /></div>
               <div className="trust-content">
-                <div className="eyebrow"><span /> Confiança sem atalhos</div>
-                <h2 id="trust-title">Transparência também faz parte da entrega.</h2>
-                <p>Uma marca nova não precisa inventar histórias antigas. Na Aurevion, a confiança nasce de escopo claro, acompanhamento próximo e resultados que podem ser demonstrados.</p>
+                <div className="eyebrow"><span /> Processo sem ruído</div>
+                <h2 id="trust-title">Um caminho claro, do início à evolução.</h2>
+                <p>A Aurevion organiza prioridades, decisões e entregas em etapas simples de acompanhar. Você sabe o que está sendo construído, por quê e qual é o próximo passo.</p>
               </div>
               <div className="trust-points">
                 <div><span>01</span><p>Objetivos e prioridades definidos antes de começar.</p></div>
@@ -470,7 +498,7 @@ export default function Home() {
               <p>Conte o que você quer criar ou melhorar. A Aurevion ajuda a transformar a intenção em um próximo passo claro.</p>
               <div className="contact-direct">
                 <span>Prefere ir direto?</span>
-                <WhatsAppLink className="contact-phone" location="contato-direto">+55 27 92002-6247 <i aria-hidden="true">↗</i></WhatsAppLink>
+                <WhatsAppLink className="contact-phone" location="contato-direto">+55 27 92002-6247</WhatsAppLink>
               </div>
             </div>
 
@@ -494,7 +522,7 @@ export default function Home() {
                 <span>Sobre o projeto</span>
                 <textarea name="message" placeholder="O que você quer criar ou melhorar?" rows={4} required minLength={10} />
               </label>
-              <button className="button button-primary form-submit" type="submit">Enviar pelo WhatsApp <span aria-hidden="true">↗</span></button>
+              <m.button className="button button-primary form-submit" type="submit" whileHover={{ y: -2 }} whileTap={{ scale: 0.99 }}>Enviar pelo WhatsApp</m.button>
               <p className="form-note">Abriremos o WhatsApp com sua mensagem pronta. Você poderá revisar antes de enviar.</p>
             </m.form>
           </div>
