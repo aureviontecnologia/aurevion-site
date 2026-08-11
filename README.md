@@ -2,7 +2,7 @@
 
 Landing page institucional e de conversão da Aurevion, construída com React, Vinext, CSS responsivo, Motion e uma composição audiovisual criada em Remotion.
 
-Repositório público: https://github.com/albertocodexx/aurevion-site
+Repositório público: https://github.com/aureviontecnologia/aurevion-site
 
 ## Conteúdo e contato
 

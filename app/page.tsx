@@ -578,7 +578,7 @@ export default function Home() {
           </div>
           <div className="footer-links">
             <div><h3>Navegação</h3><a href="#servicos">Serviços</a><a href="#projetos">Projetos</a><a href="#processo">Como fazemos</a></div>
-            <div><h3>Contato</h3><WhatsAppLink className="footer-link" location="footer">WhatsApp</WhatsAppLink><a href="#contato">Enviar briefing</a><a href="https://github.com/albertocodexx/aurevion-site" target="_blank" rel="noreferrer">GitHub</a></div>
+            <div><h3>Contato</h3><WhatsAppLink className="footer-link" location="footer">WhatsApp</WhatsAppLink><a href="#contato">Enviar briefing</a><a href="https://github.com/aureviontecnologia/aurevion-site" target="_blank" rel="noreferrer">GitHub</a></div>
           </div>
         </div>
         <div className="shell footer-bottom">
