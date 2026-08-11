@@ -1,6 +1,6 @@
 # Aurevion
 
-Landing page institucional e de conversão da Aurevion, construída com React, Vinext, CSS responsivo, Motion e uma composição audiovisual criada em Remotion.
+Landing page institucional e de conversão da Aurevion, construída com React, Vinext, CSS responsivo, Motion, uma composição audiovisual criada em Remotion e uma direção visual gerada no Higgsfield AI.
 
 Repositório público: https://github.com/albertocodexx/aurevion-site
 
@@ -33,6 +33,7 @@ O conteúdo fica em `app/page.tsx`. Os arrays `services`, `projects` e `principl
 - `public/og.png`: imagem de compartilhamento social
 - `public/aurevion-hero.mp4`: composição audiovisual do hero
 - `public/aurevion-hero-poster.png`: poster exibido antes do vídeo carregar
+- `public/aurevion-higgsfield.webp`: visual conceitual 16:9 gerado no Higgsfield AI
 
 Mantenha a proporção do logo. Para novas imagens, use WebP/AVIF quando possível, dimensões explícitas e carregamento lazy fora do primeiro viewport.
 
@@ -53,7 +54,7 @@ Em Windows PowerShell, se o script de ambiente do npm não for interpretado, exe
 
 ## Publicação
 
-O destino preferido é Vercel com `aurevion.vercel.app` ou `aureviontecnologia.vercel.app`. Cloudflare Pages é o fallback com os mesmos nomes, caso ambos estejam indisponíveis no Vercel. Para um domínio próprio no futuro, opções naturais são `aurevion.com.br` ou `aurevion.com` conforme disponibilidade.
+O site está publicado na Vercel em `aureviontecnologia.vercel.app`; o nome `aurevion.vercel.app` já estava ocupado. Para um domínio próprio no futuro, opções naturais são `aurevion.com.br` ou `aurevion.com` conforme disponibilidade.
 
 ## Checklist antes de publicar
 

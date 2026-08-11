@@ -35,6 +35,8 @@ test("server-renders the Aurevion conversion landing page", async () => {
   assert.match(html, /Sites &amp; landing pages/i);
   assert.match(html, /Possibilidades/i);
   assert.match(html, /Nota de transparência/i);
+  assert.match(html, /aurevion-higgsfield\.webp/i);
+  assert.match(html, /Visual conceitual · Higgsfield AI/i);
   assert.match(html, /5527920026247/);
   assert.doesNotMatch(html, /codex-preview|Your site is taking shape|Building your site/i);
 });

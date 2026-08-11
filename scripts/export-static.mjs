@@ -6,7 +6,8 @@ const projectRoot = process.cwd();
 const outputDir = path.join(projectRoot, "vercel-static");
 const clientDir = path.join(projectRoot, "dist", "client");
 const workerPath = path.join(projectRoot, "dist", "server", "index.js");
-const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || "https://aurevion.vercel.app";
+const siteUrl =
+  process.env.NEXT_PUBLIC_SITE_URL || "https://aureviontecnologia.vercel.app";
 
 await rm(outputDir, { recursive: true, force: true });
 await mkdir(outputDir, { recursive: true });

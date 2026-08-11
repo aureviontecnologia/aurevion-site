@@ -129,16 +129,17 @@ function WhatsAppLink({
 function ProjectVisual({ kind }: { kind: (typeof projects)[number]["kind"] }) {
   if (kind === "website") {
     return (
-      <div className="mock-browser mock-website" aria-hidden="true">
-        <div className="mock-toolbar"><i /><i /><i /></div>
-        <div className="mock-nav"><span>AUREVION</span><b /></div>
-        <div className="mock-web-body">
-          <small>EXPERIÊNCIA DIGITAL</small>
-          <strong>Ideias que<br />ganham direção.</strong>
-          <div className="mock-button" />
-        </div>
-        <div className="mock-floating-card"><i /><span><b /> <b /></span></div>
-      </div>
+      <figure className="higgsfield-visual">
+        <img
+          src="/aurevion-higgsfield.webp"
+          width="1280"
+          height="720"
+          loading="lazy"
+          decoding="async"
+          alt="Composição abstrata em azul-marinho e dourado criada para a Aurevion no Higgsfield AI"
+        />
+        <figcaption>Visual conceitual · Higgsfield AI</figcaption>
+      </figure>
     );
   }
 
