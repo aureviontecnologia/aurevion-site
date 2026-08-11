@@ -53,8 +53,12 @@ test("keeps accessibility, motion and starter cleanup explicit", async () => {
   assert.match(page, /aria-label="Navegação principal"/);
   assert.match(page, /id="mobile-navigation"/);
   assert.match(page, /useReducedMotion/);
+  assert.doesNotMatch(page, /ThemeGlyph|theme-toggle|aurevion-theme|data-theme/);
   assert.match(layout, /lang="pt-BR"/);
+  assert.match(layout, /themeColor:\s*"#07101a"/);
   assert.match(layout, /application\/ld\+json/);
+  assert.match(css, /color-scheme:\s*dark/);
+  assert.doesNotMatch(css, /data-theme|theme-toggle|#f7f7f4|#ffffff/i);
   assert.match(css, /prefers-reduced-motion:\s*reduce/);
   assert.match(css, /:focus-visible/);
   assert.match(packageJson, /"motion":/);

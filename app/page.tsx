@@ -144,19 +144,6 @@ function WhatsAppLink({
   );
 }
 
-function ThemeGlyph({ mode }: { mode: "sun" | "moon" }) {
-  return mode === "moon" ? (
-    <svg viewBox="0 0 24 24" aria-hidden="true">
-      <path d="M20 15.2A8.4 8.4 0 0 1 8.8 4a8.5 8.5 0 1 0 11.2 11.2Z" />
-    </svg>
-  ) : (
-    <svg viewBox="0 0 24 24" aria-hidden="true">
-      <circle cx="12" cy="12" r="3.5" />
-      <path d="M12 2.5v2M12 19.5v2M4.6 4.6 6 6M18 18l1.4 1.4M2.5 12h2M19.5 12h2M4.6 19.4 6 18M18 6l1.4-1.4" />
-    </svg>
-  );
-}
-
 function ServiceGlyph({ kind }: { kind: (typeof services)[number]["icon"] }) {
   const common = {
     viewBox: "0 0 24 24",
@@ -185,7 +172,6 @@ function ServiceGlyph({ kind }: { kind: (typeof services)[number]["icon"] }) {
 
 export default function Home() {
   const [menuOpen, setMenuOpen] = useState(false);
-  const [theme, setTheme] = useState<"light" | "dark">("light");
   const menuButtonRef = useRef<HTMLButtonElement>(null);
   const mobileNavRef = useRef<HTMLElement>(null);
   const prefersReducedMotion = useReducedMotion();
@@ -195,17 +181,6 @@ export default function Home() {
     damping: 28,
     mass: 0.2,
   });
-
-  useEffect(() => {
-    const savedTheme = window.localStorage.getItem("aurevion-theme");
-    const initialTheme = savedTheme === "dark" ? "dark" : "light";
-    const animationFrame = window.requestAnimationFrame(() => {
-      setTheme(initialTheme);
-      document.documentElement.dataset.theme = initialTheme;
-    });
-
-    return () => window.cancelAnimationFrame(animationFrame);
-  }, []);
 
   useEffect(() => {
     if (!menuOpen) return;
@@ -225,13 +200,6 @@ export default function Home() {
       window.removeEventListener("keydown", closeOnEscape);
     };
   }, [menuOpen]);
-
-  function toggleTheme() {
-    const nextTheme = theme === "light" ? "dark" : "light";
-    setTheme(nextTheme);
-    document.documentElement.dataset.theme = nextTheme;
-    window.localStorage.setItem("aurevion-theme", nextTheme);
-  }
 
   function closeMenu() {
     setMenuOpen(false);
@@ -277,9 +245,6 @@ export default function Home() {
           </nav>
 
           <div className="header-actions">
-            <m.button className="theme-toggle" type="button" onClick={toggleTheme} whileTap={{ scale: 0.94 }} aria-label={`Ativar modo ${theme === "light" ? "escuro" : "claro"}`}>
-              <ThemeGlyph mode={theme === "light" ? "moon" : "sun"} />
-            </m.button>
             <WhatsAppLink className="button button-small button-gold header-cta" location="header">
               Falar no WhatsApp
             </WhatsAppLink>

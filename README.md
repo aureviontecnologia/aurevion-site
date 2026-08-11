@@ -65,7 +65,7 @@ O site está publicado na Vercel em `aureviontecnologia.vercel.app`; o nome `aur
 - [ ] Definir `NEXT_PUBLIC_SITE_URL` com a URL final
 - [ ] Configurar `NEXT_PUBLIC_GA_ID` e consentimento LGPD, se necessário
 - [ ] Rodar `npm test` e validar o build de produção
-- [ ] Testar teclado, modo escuro e preferência de movimento reduzido
+- [ ] Testar teclado, tema escuro permanente e preferência de movimento reduzido
 - [ ] Testar 375 px, 768 px, 1024 px e desktop
 - [ ] Verificar title, description, canonical, Open Graph, sitemap e robots
 - [ ] Conferir compressão do vídeo e das imagens
