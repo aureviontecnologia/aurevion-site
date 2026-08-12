@@ -14,8 +14,6 @@ import {
   domAnimation,
   m,
   useReducedMotion,
-  useScroll,
-  useSpring,
 } from "motion/react";
 
 const WHATSAPP_NUMBER = "5527920026247";
@@ -137,7 +135,7 @@ function BrandMark({ compact = false }: { compact?: boolean }) {
   return (
     <span className={compact ? "brand-mark is-compact" : "brand-mark"}>
       <Image
-        src="/aurevion-symbol.png"
+        src="/aurevion-symbol-transparent.png"
         alt=""
         width={42}
         height={42}
@@ -202,35 +200,34 @@ function DemoPanel({ active }: { active: DemoId }) {
         <span>Ecossistema conectado</span>
         <strong>Uma informação, vários destinos</strong>
       </div>
-      <div className="integration-map" aria-hidden="true">
-        <span className="integration-path path-one" />
-        <span className="integration-path path-two" />
-        <span className="integration-path path-three" />
-        <div className="map-node node-form">Formulário</div>
-        <div className="map-node node-whatsapp">WhatsApp</div>
-        <div className="map-core"><span>A</span><small>Fluxo Aurevion</small></div>
-        <div className="map-node node-crm">CRM</div>
-        <div className="map-node node-team">Equipe</div>
+      <div
+        className="integration-map"
+        aria-label="Formulário e WhatsApp conectados ao CRM e à equipe"
+      >
+        <div className="integration-group">
+          <small>Entradas</small>
+          <div className="map-node">Formulário</div>
+          <div className="map-node">WhatsApp</div>
+        </div>
+        <span className="integration-connector" aria-hidden="true" />
+        <div className="map-core">
+          <small>Conexão</small>
+          <strong>Informação organizada</strong>
+        </div>
+        <span className="integration-connector" aria-hidden="true" />
+        <div className="integration-group">
+          <small>Destinos</small>
+          <div className="map-node">CRM</div>
+          <div className="map-node">Equipe</div>
+        </div>
       </div>
     </div>
   );
 }
 
 function AurevionFlow() {
-  const sectionRef = useRef<HTMLElement>(null);
-  const { scrollYProgress } = useScroll({
-    target: sectionRef,
-    offset: ["start end", "end start"],
-  });
-  const flowProgress = useSpring(scrollYProgress, {
-    stiffness: 110,
-    damping: 28,
-    mass: 0.35,
-  });
-
   return (
     <section
-      ref={sectionRef}
       className="flow-section"
       id="fluxo"
       data-track="service_view"
@@ -247,23 +244,19 @@ function AurevionFlow() {
         </div>
 
         <div className="flow-map" aria-label="Exemplo de fluxo digital conectado">
-          <m.span className="flow-progress" style={{ scaleX: flowProgress }} />
-          <m.span className="flow-progress flow-progress-mobile" style={{ scaleY: flowProgress }} />
           <div className="flow-entry">
             <small>Entrada</small>
             <strong>Novo contato</strong>
           </div>
+          <span className="flow-connector" aria-hidden="true" />
           <div className="flow-core">
-            <span>A</span>
-            <small>Organizar</small>
-            <small>Aplicar regra</small>
-            <small>Encaminhar</small>
+            <small>Organização</small>
+            <strong>Informação pronta para agir</strong>
           </div>
+          <span className="flow-connector" aria-hidden="true" />
           <div className="flow-results">
-            <small>Saídas</small>
-            <strong>CRM atualizado</strong>
-            <strong>Equipe notificada</strong>
-            <strong>Próximo passo criado</strong>
+            <small>Resultado</small>
+            <strong>Equipe responsável acionada</strong>
           </div>
         </div>
       </div>
@@ -274,7 +267,6 @@ function AurevionFlow() {
 export default function Home() {
   const [menuOpen, setMenuOpen] = useState(false);
   const [activeDemo, setActiveDemo] = useState<DemoId>("operacao");
-  const [videoPlaying, setVideoPlaying] = useState(false);
   const menuButtonRef = useRef<HTMLButtonElement>(null);
   const menuCloseRef = useRef<HTMLButtonElement>(null);
   const menuRef = useRef<HTMLElement>(null);
@@ -326,10 +318,22 @@ export default function Home() {
 
     if (prefersReducedMotion) {
       video.pause();
+      video.currentTime = 0;
       return;
     }
 
-    void video.play().catch(() => undefined);
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting && !video.ended) {
+          void video.play().catch(() => undefined);
+          return;
+        }
+        video.pause();
+      },
+      { threshold: 0.55 },
+    );
+    observer.observe(video);
+    return () => observer.disconnect();
   }, [prefersReducedMotion]);
 
   useEffect(() => {
@@ -373,17 +377,6 @@ export default function Home() {
 
   function closeMenu() {
     setMenuOpen(false);
-  }
-
-  function toggleVideo() {
-    const video = videoRef.current;
-    if (!video) return;
-    if (video.paused) {
-      void video.play().then(() => setVideoPlaying(true));
-    } else {
-      video.pause();
-      setVideoPlaying(false);
-    }
   }
 
   function selectDemo(id: DemoId) {
@@ -545,22 +538,14 @@ export default function Home() {
                 ref={videoRef}
                 className="hero-video"
                 muted
-                loop
                 playsInline
                 preload="metadata"
-                poster="/aurevion-hero-poster.png"
-                aria-label="Demonstração audiovisual de um fluxo de sistema da Aurevion"
-                onPlay={() => setVideoPlaying(true)}
-                onPause={() => setVideoPlaying(false)}
+                poster="/aurevion-flow-poster.webp"
+                aria-hidden="true"
+                tabIndex={-1}
               >
-                <source src="/aurevion-hero.mp4" type="video/mp4" />
+                <source src="/aurevion-flow.mp4" type="video/mp4" />
               </video>
-              <div className="film-shade" aria-hidden="true" />
-              <span className="film-caption">Aurevion / System motion</span>
-              <button className="film-control" type="button" onClick={toggleVideo}>
-                <span aria-hidden="true">{videoPlaying ? "Ⅱ" : "▶"}</span>
-                {videoPlaying ? "Pausar" : "Reproduzir"}
-              </button>
             </m.div>
           </section>
 
@@ -598,9 +583,19 @@ export default function Home() {
                 </ul>
               </div>
               <div className="site-composition" aria-label="Estrutura de mensagem de um site">
-                <div className="site-statement">Uma ideia forte,<br />sem ruído.</div>
-                <div className="site-proof"><span>Mensagem</span><span>Contexto</span><span>Ação</span></div>
-                <span className="site-cut" aria-hidden="true" />
+                <div className="site-preview-head">
+                  <span>Seu site</span>
+                  <span>Mensagem clara</span>
+                </div>
+                <div className="site-statement">
+                  <small>O que sua empresa faz</small>
+                  <strong>Seu valor, explicado com clareza.</strong>
+                  <p>O cliente entende a proposta e encontra o próximo passo.</p>
+                </div>
+                <div className="site-proof">
+                  <div><small>Contexto</small><strong>Benefícios objetivos</strong></div>
+                  <div><small>Próximo passo</small><strong>Conversa no WhatsApp</strong></div>
+                </div>
               </div>
             </article>
 
@@ -610,11 +605,11 @@ export default function Home() {
               data-track-label="sistemas"
             >
               <div className="system-composition" aria-label="Fluxo de um sistema sob medida">
-                <span className="system-track track-in" aria-hidden="true" />
-                <span className="system-track track-out" aria-hidden="true" />
                 <div className="system-input"><small>Entrada</small><strong>Solicitação recebida</strong></div>
-                <div className="system-core"><span>A</span><small>Regras da operação</small></div>
-                <div className="system-output"><small>Ação</small><strong>Equipe certa acionada</strong></div>
+                <span className="system-connector" aria-hidden="true" />
+                <div className="system-core"><small>Organização</small><strong>Sistema organiza e encaminha</strong></div>
+                <span className="system-connector" aria-hidden="true" />
+                <div className="system-output"><small>Resultado</small><strong>Equipe responsável acionada</strong></div>
               </div>
               <div className="solution-copy">
                 <span>Sistemas</span>

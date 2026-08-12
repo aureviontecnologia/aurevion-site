@@ -39,6 +39,9 @@ test("server-renders the Aurevion conversion landing page", async () => {
   assert.doesNotMatch(html, /Nota de transparência/i);
   assert.doesNotMatch(html, /Interface demonstrativa/i);
   assert.doesNotMatch(html, /Abriremos o WhatsApp/i);
+  assert.doesNotMatch(html, /Regras da operação|Pausar|Reproduzir|System motion/i);
+  assert.match(html, /Sistema organiza e encaminha/i);
+  assert.match(html, /aurevion-flow\.mp4/i);
   assert.match(html, /Visão da operação/i);
   assert.doesNotMatch(html, /aurevion-higgs|Higgsfield/i);
   assert.match(html, /5527920026247/);
@@ -60,6 +63,9 @@ test("keeps accessibility, motion and starter cleanup explicit", async () => {
   assert.match(page, /function DemoPanel/);
   assert.match(page, /function AurevionFlow/);
   assert.doesNotMatch(page, /project\.image|aurevion-higgs|Higgsfield/i);
+  assert.doesNotMatch(page, /videoPlaying|toggleVideo|film-control|site-cut|system-track|Regras da operação/i);
+  assert.match(page, /aurevion-symbol-transparent\.png/);
+  assert.match(page, /aurevion-flow-poster\.webp/);
   assert.doesNotMatch(page, /ThemeGlyph|theme-toggle|aurevion-theme|data-theme/);
   assert.doesNotMatch(page, /service-top|project-index|trust-points|number:\s*"0[1-9]"|window-dots|system-window-bar/);
   assert.match(layout, /lang="pt-BR"/);
@@ -69,6 +75,7 @@ test("keeps accessibility, motion and starter cleanup explicit", async () => {
   assert.doesNotMatch(css, /data-theme|theme-toggle|#f7f7f4|#ffffff/i);
   assert.match(css, /prefers-reduced-motion:\s*reduce/);
   assert.match(css, /:focus-visible/);
+  assert.doesNotMatch(css, /\.film-control|\.site-cut|\.system-track|\.integration-path/);
   assert.match(packageJson, /"motion":/);
   assert.doesNotMatch(packageJson, /react-loading-skeleton/);
   await assert.rejects(access(new URL("../app/_sites-preview/SkeletonPreview.tsx", import.meta.url)));
