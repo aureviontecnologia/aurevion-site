@@ -30,10 +30,11 @@ test("server-renders the Aurevion conversion landing page", async () => {
 
   const html = await response.text();
   assert.match(html, /<html[^>]*lang="pt-BR"/i);
-  assert.match(html, /<title>Aurevion \| Sites, sistemas e automações sob medida<\/title>/i);
-  assert.match(html, /Ideias ambiciosas merecem experiências digitais/i);
-  assert.match(html, /Sites &amp; landing pages/i);
-  assert.match(html, /Soluções em destaque/i);
+  assert.match(html, /<title>Aurevion \| Sites e sistemas sob medida<\/title>/i);
+  assert.match(html, /Sites e sistemas que fazem sua empresa/i);
+  assert.match(html, /Sites que apresentam e convertem/i);
+  assert.match(html, /Sistemas que organizam e escalam/i);
+  assert.match(html, /O que podemos criar/i);
   assert.doesNotMatch(html, /Nota de transparência/i);
   assert.match(html, /Interface demonstrativa · presença digital/i);
   assert.match(html, /Visão operacional/i);
@@ -57,6 +58,7 @@ test("keeps accessibility, motion and starter cleanup explicit", async () => {
   assert.match(page, /function ProjectVisual/);
   assert.doesNotMatch(page, /project\.image|aurevion-higgs|Higgsfield/i);
   assert.doesNotMatch(page, /ThemeGlyph|theme-toggle|aurevion-theme|data-theme/);
+  assert.doesNotMatch(page, /service-top|project-index|trust-points|number:\s*"0[1-9]"/);
   assert.match(layout, /lang="pt-BR"/);
   assert.match(layout, /themeColor:\s*"#07101a"/);
   assert.match(layout, /application\/ld\+json/);

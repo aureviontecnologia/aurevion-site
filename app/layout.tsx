@@ -18,9 +18,9 @@ const gaId = process.env.NEXT_PUBLIC_GA_ID;
 
 export const metadata: Metadata = {
   metadataBase: new URL(siteUrl),
-  title: "Aurevion | Sites, sistemas e automações sob medida",
+  title: "Aurevion | Sites e sistemas sob medida",
   description:
-    "A Aurevion cria sites, sistemas e automações sob medida para transformar presença digital em oportunidades reais de negócio.",
+    "A Aurevion cria sites e sistemas sob medida com estratégia, design e tecnologia para fazer sua empresa avançar.",
   applicationName: "Aurevion",
   keywords: [
     "Aurevion",
@@ -54,7 +54,7 @@ export const metadata: Metadata = {
     siteName: "Aurevion",
     title: "Aurevion — Tecnologia com direção",
     description:
-      "Sites, sistemas e automações sob medida para transformar ideias em oportunidades reais de negócio.",
+      "Sites e sistemas sob medida para transformar ideias em experiências digitais de verdade.",
     images: [
       {
         url: "/og.png",
@@ -67,7 +67,7 @@ export const metadata: Metadata = {
   twitter: {
     card: "summary_large_image",
     title: "Aurevion — Tecnologia com direção",
-    description: "Sites, sistemas e automações sob medida.",
+    description: "Sites e sistemas sob medida.",
     images: ["/og.png"],
   },
   icons: {
@@ -93,7 +93,7 @@ const organizationSchema = {
   url: siteUrl,
   logo: `${siteUrl}/aurevion-symbol.png`,
   description:
-    "Desenvolvimento de sites, sistemas, automações e integrações digitais sob medida.",
+    "Desenvolvimento de sites e sistemas digitais sob medida.",
   contactPoint: {
     "@type": "ContactPoint",
     telephone: "+55-27-92002-6247",
