@@ -65,6 +65,9 @@ test("keeps accessibility, motion and starter cleanup explicit", async () => {
   assert.match(page, /useReducedMotion/);
   assert.match(page, /function DemoPanel/);
   assert.match(page, /function AurevionFlow/);
+  assert.match(page, /function FaqItem/);
+  assert.match(page, /aria-expanded=\{isOpen\}/);
+  assert.match(page, /animate=\{\{ height: isOpen \? "auto" : 0/);
   assert.doesNotMatch(page, /project\.image|aurevion-higgs|Higgsfield/i);
   assert.doesNotMatch(page, /videoPlaying|toggleVideo|film-control|site-cut|system-track|Regras da operação/i);
   assert.match(page, /aurevion-symbol-transparent\.png/);

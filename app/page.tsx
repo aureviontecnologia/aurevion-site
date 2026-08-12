@@ -92,6 +92,64 @@ const faqs = [
   },
 ] as const;
 
+function FaqItem({
+  faq,
+  index,
+  prefersReducedMotion,
+}: {
+  faq: (typeof faqs)[number];
+  index: number;
+  prefersReducedMotion: boolean;
+}) {
+  const [isOpen, setIsOpen] = useState(false);
+  const triggerId = `faq-trigger-${index}`;
+  const panelId = `faq-panel-${index}`;
+  const duration = prefersReducedMotion ? 0 : isOpen ? 0.24 : 0.19;
+
+  return (
+    <article className={`faq-item${isOpen ? " is-open" : ""}`}>
+      <button
+        className="faq-trigger"
+        id={triggerId}
+        type="button"
+        aria-expanded={isOpen}
+        aria-controls={panelId}
+        onClick={() => setIsOpen((open) => !open)}
+      >
+        <span>{faq.question}</span>
+        <m.span
+          className="faq-icon"
+          aria-hidden="true"
+          animate={{ rotate: isOpen ? 45 : 0 }}
+          transition={{ duration, ease: [0.215, 0.61, 0.355, 1] }}
+        >
+          +
+        </m.span>
+      </button>
+      <m.div
+        className="faq-answer"
+        id={panelId}
+        role="region"
+        aria-labelledby={triggerId}
+        aria-hidden={!isOpen}
+        initial={false}
+        animate={{ height: isOpen ? "auto" : 0, opacity: isOpen ? 1 : 0 }}
+        transition={{
+          height: { duration, ease: [0.215, 0.61, 0.355, 1] },
+          opacity: {
+            duration: prefersReducedMotion ? 0 : isOpen ? 0.18 : 0.12,
+            ease: "easeOut",
+          },
+        }}
+      >
+        <div className="faq-answer-inner">
+          <p>{faq.answer}</p>
+        </div>
+      </m.div>
+    </article>
+  );
+}
+
 function trackEvent(
   eventName: string,
   parameters: Record<string, string | number>,
@@ -736,11 +794,13 @@ export default function Home() {
               <h2>Antes de começar.</h2>
             </div>
             <div className="faq-list">
-              {faqs.map((faq) => (
-                <details key={faq.question}>
-                  <summary>{faq.question}<span aria-hidden="true">+</span></summary>
-                  <p>{faq.answer}</p>
-                </details>
+              {faqs.map((faq, index) => (
+                <FaqItem
+                  key={faq.question}
+                  faq={faq}
+                  index={index}
+                  prefersReducedMotion={Boolean(prefersReducedMotion)}
+                />
               ))}
             </div>
           </section>

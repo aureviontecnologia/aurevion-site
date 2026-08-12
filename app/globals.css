@@ -1166,39 +1166,43 @@ p {
   border-top: 1px solid var(--color-line-strong);
 }
 
-.faq-list details {
+.faq-item {
   border-bottom: 1px solid var(--color-line);
 }
 
-.faq-list summary {
+.faq-trigger {
+  width: 100%;
   min-height: 88px;
   display: grid;
   grid-template-columns: 1fr auto;
   align-items: center;
   gap: 24px;
+  padding: 0;
+  border: 0;
   cursor: pointer;
+  color: var(--color-ink);
+  background: transparent;
+  font: inherit;
   font-size: 1rem;
   font-weight: 650;
-  list-style: none;
+  text-align: left;
 }
 
-.faq-list summary::-webkit-details-marker {
-  display: none;
-}
-
-.faq-list summary span {
+.faq-icon {
+  display: grid;
+  place-items: center;
   color: var(--color-gold-light);
   font-family: var(--font-mono);
   font-size: 1.35rem;
   font-weight: 400;
-  transition: transform 180ms var(--ease-move);
+  line-height: 1;
 }
 
-.faq-list details[open] summary span {
-  transform: rotate(45deg);
+.faq-answer {
+  overflow: hidden;
 }
 
-.faq-list details p {
+.faq-answer-inner p {
   max-width: 620px;
   margin: 0;
   padding: 0 50px 28px 0;
