@@ -1,6 +1,12 @@
 "use client";
 
-import { FormEvent, useEffect, useRef, useState } from "react";
+import {
+  FormEvent,
+  useEffect,
+  useRef,
+  useState,
+} from "react";
+import Image from "next/image";
 import {
   AnimatePresence,
   LazyMotion,
@@ -8,86 +14,93 @@ import {
   domAnimation,
   m,
   useReducedMotion,
+  useScroll,
+  useSpring,
 } from "motion/react";
 
 const WHATSAPP_NUMBER = "5527920026247";
 const WHATSAPP_URL = `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(
-  "Olá! Gostaria de conhecer seus serviços.",
+  "Olá! Gostaria de conhecer os serviços da Aurevion.",
 )}`;
 
-const services = [
+const navigation = [
+  { label: "Soluções", href: "#solucoes" },
+  { label: "Como funciona", href: "#fluxo" },
+  { label: "Demonstração", href: "#demonstracao" },
+  { label: "Contato", href: "#contato" },
+] as const;
+
+const demoTabs = [
   {
-    label: "Presença digital",
-    title: "Sites que apresentam e convertem",
-    text: "Criamos sites e landing pages rápidos, responsivos e alinhados à sua marca — com uma jornada clara para transformar visitas em conversas.",
-    highlights: ["Estratégia", "Design", "Desenvolvimento"],
-    accent: "blue",
-    icon: "web",
+    id: "operacao",
+    label: "Operação",
+    title: "O trabalho aparece no lugar certo.",
+    text: "Demandas, responsáveis e próximos passos ficam visíveis sem depender de mensagens soltas.",
   },
   {
-    label: "Operação digital",
-    title: "Sistemas que organizam e escalam",
-    text: "Desenvolvemos sistemas sob medida para simplificar processos, conectar informações e dar mais controle à sua operação.",
-    highlights: ["Sistemas web", "Automação", "Integrações"],
-    accent: "gold",
-    icon: "system",
+    id: "comercial",
+    label: "Comercial",
+    title: "Cada oportunidade segue uma jornada clara.",
+    text: "O contato entra, recebe contexto e avança para o atendimento sem perder informação pelo caminho.",
+  },
+  {
+    id: "integracoes",
+    label: "Integrações",
+    title: "As ferramentas deixam de trabalhar isoladas.",
+    text: "Site, formulário, WhatsApp e sistema trocam dados dentro de um fluxo desenhado para a empresa.",
   },
 ] as const;
 
-const projects = [
+type DemoId = (typeof demoTabs)[number]["id"];
+
+const processPhases = [
   {
-    title: "Presença premium",
-    description:
-      "Landing page para uma marca de serviços, com narrativa clara e conversão direta pelo WhatsApp.",
-    tags: ["Web design", "Conversão"],
-    kind: "website",
-    theme: "navy",
+    title: "Entender",
+    text: "Mapeamos objetivo, rotina e pontos de atrito antes de falar em tela ou tecnologia.",
   },
   {
-    title: "Atendimento inteligente",
-    description:
-      "Fluxo que organiza contatos, qualifica demandas e encaminha cada oportunidade para o próximo passo.",
-    tags: ["Automação", "IA"],
-    kind: "automation",
-    theme: "sand",
+    title: "Prototipar",
+    text: "Transformamos a ideia em uma experiência navegável para validar o caminho cedo.",
   },
   {
-    title: "Operação em um só lugar",
-    description:
-      "Painel para acompanhar tarefas, indicadores e decisões sem depender de planilhas dispersas.",
-    tags: ["Sistema", "Dashboard"],
-    kind: "dashboard",
-    theme: "ice",
+    title: "Construir",
+    text: "Desenvolvemos com atenção a desempenho, manutenção e uso em qualquer dispositivo.",
   },
   {
-    title: "Jornada integrada",
-    description:
-      "Experiência conectando site, formulário, CRM e atendimento em uma única jornada comercial.",
-    tags: ["Integrações", "Produto digital"],
-    kind: "integration",
-    theme: "charcoal",
+    title: "Evoluir",
+    text: "A solução nasce preparada para receber novos fluxos, integrações e melhorias.",
   },
 ] as const;
 
-const principles = [
+const faqs = [
   {
-    title: "Clareza desde o início",
-    text: "Objetivos, prioridades e próximos passos definidos sem complicação.",
+    question: "A Aurevion trabalha com sites e sistemas?",
+    answer:
+      "Sim. Podemos criar desde uma presença digital focada em conversão até um sistema sob medida para organizar a operação da empresa.",
   },
   {
-    title: "Design com propósito",
-    text: "Uma experiência bonita, intuitiva e consistente em qualquer tela.",
+    question: "É possível integrar ferramentas que já usamos?",
+    answer:
+      "A viabilidade depende das integrações disponíveis em cada ferramenta. Primeiro entendemos o cenário e indicamos o caminho mais seguro.",
   },
   {
-    title: "Tecnologia preparada para evoluir",
-    text: "Soluções rápidas, bem construídas e prontas para acompanhar o negócio.",
+    question: "Como começa um projeto?",
+    answer:
+      "A primeira etapa é uma conversa objetiva sobre o problema, o resultado esperado e o que já existe hoje. Depois disso, definimos o próximo passo.",
   },
 ] as const;
 
-function trackEvent(eventName: string, parameters: Record<string, string>) {
+function trackEvent(
+  eventName: string,
+  parameters: Record<string, string | number>,
+) {
   if (typeof window === "undefined") return;
   const analyticsWindow = window as Window & {
-    gtag?: (command: string, event: string, params: Record<string, string>) => void;
+    gtag?: (
+      command: string,
+      event: string,
+      params: Record<string, string | number>,
+    ) => void;
   };
   analyticsWindow.gtag?.("event", eventName, parameters);
 }
@@ -101,17 +114,18 @@ function WhatsAppLink({
   className: string;
   location: string;
 }) {
-  const isPrimaryAction = className.includes("button");
-
   return (
     <m.a
       href={WHATSAPP_URL}
       target="_blank"
       rel="noreferrer"
       className={className}
-      onClick={() => trackEvent("whatsapp_click", { location })}
-      whileHover={isPrimaryAction ? { y: -2 } : undefined}
-      whileTap={isPrimaryAction ? { scale: 0.985 } : undefined}
+      onClick={() => {
+        trackEvent("cta_click", { location, destination: "whatsapp" });
+        trackEvent("contact_click", { location, channel: "whatsapp" });
+        trackEvent("whatsapp_click", { location });
+      }}
+      whileTap={{ transform: "scale(0.98)" }}
       aria-label={`${typeof children === "string" ? children : "Falar com a Aurevion"} (abre em nova aba)`}
     >
       {children}
@@ -119,130 +133,268 @@ function WhatsAppLink({
   );
 }
 
-function ServiceGlyph({ kind }: { kind: (typeof services)[number]["icon"] }) {
-  const common = {
-    viewBox: "0 0 24 24",
-    fill: "none",
-    stroke: "currentColor",
-    strokeWidth: 1.6,
-    strokeLinecap: "round" as const,
-    strokeLinejoin: "round" as const,
-    "aria-hidden": true,
-  };
-
-  if (kind === "web") {
-    return <svg {...common}><rect x="2.5" y="4" width="19" height="16" rx="3" /><path d="M2.5 8.5h19" /><path d="M6 6.3h.01M9 6.3h.01" /></svg>;
-  }
-
-  return <svg {...common}><rect x="3" y="3" width="7.5" height="7.5" rx="2" /><rect x="13.5" y="3" width="7.5" height="7.5" rx="2" /><rect x="3" y="13.5" width="7.5" height="7.5" rx="2" /><path d="M14 17.2h7M17.5 13.7v7" /></svg>;
+function BrandMark({ compact = false }: { compact?: boolean }) {
+  return (
+    <span className={compact ? "brand-mark is-compact" : "brand-mark"}>
+      <Image
+        src="/aurevion-symbol.png"
+        alt=""
+        width={42}
+        height={42}
+        priority={!compact}
+        unoptimized
+      />
+      <span>AUREVION</span>
+    </span>
+  );
 }
 
-function ProjectVisual({ kind }: { kind: (typeof projects)[number]["kind"] }) {
-  if (kind === "website") {
+function DemoPanel({ active }: { active: DemoId }) {
+  if (active === "operacao") {
     return (
-      <figure className="project-visual visual-website">
-        <div className="system-window website-window" aria-hidden="true">
-          <div className="system-window-bar">
-            <span className="window-dots"><i /><i /><i /></span>
-            <small>aurevion.digital</small>
-          </div>
-          <div className="website-preview-nav"><strong>AUREVION</strong><span>ESTRATÉGIA · DESIGN · CÓDIGO</span></div>
-          <div className="website-preview-body">
-            <p>EXPERIÊNCIA DIGITAL</p>
-            <h3>Ideias que<br />ganham direção.</h3>
-            <span className="website-preview-cta">Começar projeto</span>
-          </div>
-          <div className="website-preview-status"><span>JORNADA CONECTADA</span><strong>Site + WhatsApp</strong></div>
+      <div className="demo-scene demo-operation">
+        <div className="demo-context">
+          <span>Visão da operação</span>
+          <strong>Trabalho em movimento</strong>
         </div>
-      </figure>
+        <div className="operation-board">
+          <div className="operation-lane">
+            <span className="lane-title">Recebido</span>
+            <div className="work-item"><i />Novo pedido comercial</div>
+            <div className="work-item"><i />Ajuste solicitado</div>
+          </div>
+          <div className="operation-lane is-active">
+            <span className="lane-title">Em andamento</span>
+            <div className="work-item is-gold"><i />Proposta em preparação</div>
+          </div>
+          <div className="operation-lane">
+            <span className="lane-title">Próximo passo</span>
+            <div className="work-item"><i />Retorno ao cliente</div>
+          </div>
+        </div>
+      </div>
     );
   }
 
-  if (kind === "automation") {
+  if (active === "comercial") {
     return (
-      <figure className="project-visual visual-automation">
-        <div className="automation-canvas" aria-hidden="true">
-          <div className="system-kicker"><span /> FLUXO DEMONSTRATIVO</div>
-          <div className="flow-node flow-start"><small>ENTRADA</small><strong>Novo contato</strong><span>Formulário ou WhatsApp</span></div>
-          <div className="flow-connector flow-connector-one" />
-          <div className="flow-node flow-ai"><small>ORGANIZAÇÃO</small><strong>Regras + IA</strong><span>Classificação da demanda</span></div>
-          <div className="flow-connector flow-connector-two" />
-          <div className="flow-node flow-end"><small>DESTINO</small><strong>Próximo passo</strong><span>CRM e atendimento</span></div>
+      <div className="demo-scene demo-commercial">
+        <div className="demo-context">
+          <span>Jornada comercial</span>
+          <strong>Do interesse ao atendimento</strong>
         </div>
-      </figure>
-    );
-  }
-
-  if (kind === "dashboard") {
-    return (
-      <figure className="project-visual visual-dashboard">
-        <div className="dashboard-shell" aria-hidden="true">
-          <aside>
-            <div className="dash-brand">A</div>
-            <span className="dash-nav-item is-current">Visão</span>
-            <span className="dash-nav-item">Fluxos</span>
-            <span className="dash-nav-item">Equipe</span>
-          </aside>
-          <div className="dash-main">
-            <div className="dash-head"><span>Visão operacional</span><small>HOJE</small></div>
-            <div className="dash-metrics">
-              <div><small>PROJETOS</small><strong>Em andamento</strong></div>
-              <div><small>ATENDIMENTO</small><strong>Organizado</strong></div>
-              <div><small>ENTREGAS</small><strong>Por etapa</strong></div>
-            </div>
-            <div className="dash-chart">
-              <div className="dash-chart-head"><span>Ritmo da operação</span><small>7 DIAS</small></div>
-              <div className="chart-bars"><i /><i /><i /><i /><i /><i /><i /></div>
-            </div>
-          </div>
+        <div className="journey-track" aria-hidden="true">
+          <div className="journey-step"><i />Contato recebido</div>
+          <span className="journey-line" />
+          <div className="journey-step is-current"><i />Contexto organizado</div>
+          <span className="journey-line" />
+          <div className="journey-step"><i />Equipe acionada</div>
+          <span className="journey-line" />
+          <div className="journey-step"><i />Retorno preparado</div>
         </div>
-      </figure>
+      </div>
     );
   }
 
   return (
-    <figure className="project-visual visual-integration">
-      <div className="integration-canvas" aria-hidden="true">
-        <div className="integration-grid" />
-        <div className="integration-core"><span>A</span></div>
-        <div className="integration-node node-site"><strong>Site</strong></div>
-        <div className="integration-node node-crm"><strong>CRM</strong></div>
-        <div className="integration-node node-whatsapp"><strong>WhatsApp</strong></div>
-        <div className="integration-node node-data"><strong>Dados</strong></div>
-        <i className="integration-line line-site" /><i className="integration-line line-crm" />
-        <i className="integration-line line-whatsapp" /><i className="integration-line line-data" />
+    <div className="demo-scene demo-integrations">
+      <div className="demo-context">
+        <span>Ecossistema conectado</span>
+        <strong>Uma informação, vários destinos</strong>
       </div>
-    </figure>
+      <div className="integration-map" aria-hidden="true">
+        <span className="integration-path path-one" />
+        <span className="integration-path path-two" />
+        <span className="integration-path path-three" />
+        <div className="map-node node-form">Formulário</div>
+        <div className="map-node node-whatsapp">WhatsApp</div>
+        <div className="map-core"><span>A</span><small>Fluxo Aurevion</small></div>
+        <div className="map-node node-crm">CRM</div>
+        <div className="map-node node-team">Equipe</div>
+      </div>
+    </div>
+  );
+}
+
+function AurevionFlow() {
+  const sectionRef = useRef<HTMLElement>(null);
+  const { scrollYProgress } = useScroll({
+    target: sectionRef,
+    offset: ["start end", "end start"],
+  });
+  const flowProgress = useSpring(scrollYProgress, {
+    stiffness: 110,
+    damping: 28,
+    mass: 0.35,
+  });
+
+  return (
+    <section
+      ref={sectionRef}
+      className="flow-section"
+      id="fluxo"
+      data-track="service_view"
+      data-track-label="fluxo-aurevion"
+    >
+      <div className="flow-sticky shell">
+        <div className="flow-copy">
+          <span className="section-label">Aurevion Flow</span>
+          <h2>O processo certo, conectado de ponta a ponta.</h2>
+          <p>
+            Em vez de adicionar mais uma ferramenta, desenhamos como a informação
+            deve entrar, circular e chegar a quem precisa agir.
+          </p>
+        </div>
+
+        <div className="flow-map" aria-label="Exemplo de fluxo digital conectado">
+          <m.span className="flow-progress" style={{ scaleX: flowProgress }} />
+          <m.span className="flow-progress flow-progress-mobile" style={{ scaleY: flowProgress }} />
+          <div className="flow-entry">
+            <small>Entrada</small>
+            <strong>Novo contato</strong>
+          </div>
+          <div className="flow-core">
+            <span>A</span>
+            <small>Organizar</small>
+            <small>Aplicar regra</small>
+            <small>Encaminhar</small>
+          </div>
+          <div className="flow-results">
+            <small>Saídas</small>
+            <strong>CRM atualizado</strong>
+            <strong>Equipe notificada</strong>
+            <strong>Próximo passo criado</strong>
+          </div>
+        </div>
+      </div>
+    </section>
   );
 }
 
 export default function Home() {
   const [menuOpen, setMenuOpen] = useState(false);
+  const [activeDemo, setActiveDemo] = useState<DemoId>("operacao");
+  const [videoPlaying, setVideoPlaying] = useState(false);
   const menuButtonRef = useRef<HTMLButtonElement>(null);
-  const mobileNavRef = useRef<HTMLElement>(null);
+  const menuCloseRef = useRef<HTMLButtonElement>(null);
+  const menuRef = useRef<HTMLElement>(null);
+  const videoRef = useRef<HTMLVideoElement>(null);
+  const formStartedRef = useRef(false);
   const prefersReducedMotion = useReducedMotion();
 
   useEffect(() => {
     if (!menuOpen) return;
-
-    const focusFrame = window.requestAnimationFrame(() => {
-      mobileNavRef.current?.querySelector<HTMLAnchorElement>("a")?.focus();
+    const previousOverflow = document.body.style.overflow;
+    document.body.style.overflow = "hidden";
+    const frame = window.requestAnimationFrame(() => {
+      menuRef.current?.querySelector<HTMLAnchorElement>("a")?.focus();
     });
-    const closeOnEscape = (event: KeyboardEvent) => {
-      if (event.key !== "Escape") return;
-      setMenuOpen(false);
-      menuButtonRef.current?.focus();
-    };
+    const handleMenuKeyboard = (event: KeyboardEvent) => {
+      if (event.key === "Escape") {
+        setMenuOpen(false);
+        menuButtonRef.current?.focus();
+        return;
+      }
+      if (event.key !== "Tab") return;
 
-    window.addEventListener("keydown", closeOnEscape);
+      const menuLinks = Array.from(
+        menuRef.current?.querySelectorAll<HTMLElement>("a[href]") || [],
+      );
+      const focusable = [menuCloseRef.current, ...menuLinks].filter(
+        (element): element is HTMLElement => Boolean(element),
+      );
+      const currentIndex = focusable.indexOf(document.activeElement as HTMLElement);
+      if (event.shiftKey && currentIndex <= 0) {
+        event.preventDefault();
+        focusable.at(-1)?.focus();
+      } else if (!event.shiftKey && currentIndex === focusable.length - 1) {
+        event.preventDefault();
+        focusable[0]?.focus();
+      }
+    };
+    window.addEventListener("keydown", handleMenuKeyboard);
     return () => {
-      window.cancelAnimationFrame(focusFrame);
-      window.removeEventListener("keydown", closeOnEscape);
+      document.body.style.overflow = previousOverflow;
+      window.cancelAnimationFrame(frame);
+      window.removeEventListener("keydown", handleMenuKeyboard);
     };
   }, [menuOpen]);
 
+  useEffect(() => {
+    const video = videoRef.current;
+    if (!video) return;
+
+    if (prefersReducedMotion) {
+      video.pause();
+      return;
+    }
+
+    void video.play().catch(() => undefined);
+  }, [prefersReducedMotion]);
+
+  useEffect(() => {
+    const reached = new Set<number>();
+    const thresholds = [25, 50, 75, 90];
+    const onScroll = () => {
+      const total = document.documentElement.scrollHeight - window.innerHeight;
+      if (total <= 0) return;
+      const depth = Math.round((window.scrollY / total) * 100);
+      thresholds.forEach((threshold) => {
+        if (depth < threshold || reached.has(threshold)) return;
+        reached.add(threshold);
+        trackEvent("scroll_depth", { percent: threshold });
+      });
+    };
+
+    const seen = new Set<Element>();
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (!entry.isIntersecting || seen.has(entry.target)) return;
+          seen.add(entry.target);
+          const element = entry.target as HTMLElement;
+          trackEvent(element.dataset.track || "section_view", {
+            section: element.dataset.trackLabel || element.id || "unknown",
+          });
+        });
+      },
+      { threshold: 0.4 },
+    );
+    document.querySelectorAll<HTMLElement>("[data-track]").forEach((element) => {
+      observer.observe(element);
+    });
+    window.addEventListener("scroll", onScroll, { passive: true });
+    onScroll();
+    return () => {
+      observer.disconnect();
+      window.removeEventListener("scroll", onScroll);
+    };
+  }, []);
+
   function closeMenu() {
     setMenuOpen(false);
+  }
+
+  function toggleVideo() {
+    const video = videoRef.current;
+    if (!video) return;
+    if (video.paused) {
+      void video.play().then(() => setVideoPlaying(true));
+    } else {
+      video.pause();
+      setVideoPlaying(false);
+    }
+  }
+
+  function selectDemo(id: DemoId) {
+    setActiveDemo(id);
+    trackEvent("case_study_view", { demo: id });
+  }
+
+  function startForm() {
+    if (formStartedRef.current) return;
+    formStartedRef.current = true;
+    trackEvent("form_start", { form: "project-contact" });
   }
 
   function submitContact(event: FormEvent<HTMLFormElement>) {
@@ -259,274 +411,391 @@ export default function Home() {
       `Projeto: ${message}`,
     ].join("\n");
 
-    trackEvent("contact_form_submit", { channel: "whatsapp" });
-    window.open(`https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(text)}`, "_blank", "noopener,noreferrer");
+    trackEvent("form_submit", { form: "project-contact", channel: "whatsapp" });
+    trackEvent("demo_request", { location: "contact-form" });
+    const contactUrl = `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(text)}`;
+    window.location.assign(contactUrl);
   }
 
   return (
-    <MotionConfig reducedMotion="user" transition={{ duration: 0.42, ease: [0.22, 1, 0.36, 1] }}>
+    <MotionConfig
+      reducedMotion="user"
+      transition={{ duration: 0.24, ease: [0.22, 1, 0.36, 1] }}
+    >
       <LazyMotion features={domAnimation}>
-        <>
-      <a className="skip-link" href="#conteudo">Pular para o conteúdo</a>
+        <a className="skip-link" href="#conteudo">Pular para o conteúdo</a>
 
-      <header className="site-header">
-        <div className="header-inner shell">
-          <a className="brand" href="#inicio" onClick={closeMenu} aria-label="Aurevion — início">
-            <img src="/aurevion-symbol.png" alt="" width="40" height="40" />
-            <span>AUREVION</span>
-          </a>
-
-          <nav className="main-nav desktop-nav" aria-label="Navegação principal">
-            <a href="#servicos">Serviços</a>
-            <a href="#projetos">Projetos</a>
-            <a href="#processo">Como fazemos</a>
-            <a href="#contato">Contato</a>
-          </nav>
-
-          <div className="header-actions">
-            <WhatsAppLink className="button button-small button-gold header-cta" location="header">
-              Falar no WhatsApp
-            </WhatsAppLink>
-            <m.button
-              ref={menuButtonRef}
-              className={menuOpen ? "menu-toggle is-open" : "menu-toggle"}
-              type="button"
-              onClick={() => setMenuOpen((open) => !open)}
-              whileTap={{ scale: 0.94 }}
-              aria-expanded={menuOpen}
-              aria-controls="mobile-navigation"
-              aria-label={menuOpen ? "Fechar menu" : "Abrir menu"}
-            >
-              <i /><i />
-            </m.button>
+        <header className="site-header">
+          <div className="header-inner shell">
+            <a className="brand" href="#inicio" onClick={closeMenu} aria-label="Aurevion — início">
+              <BrandMark />
+            </a>
+            <span className="header-capabilities">Sites · Sistemas · Automação</span>
+            <div className="header-actions">
+              <WhatsAppLink className="header-contact" location="header">
+                Iniciar projeto
+              </WhatsAppLink>
+              <m.button
+                ref={menuButtonRef}
+                className={menuOpen ? "menu-toggle is-open" : "menu-toggle"}
+                type="button"
+                onClick={() => setMenuOpen((open) => !open)}
+                whileTap={{ transform: "scale(0.96)" }}
+                disabled={menuOpen}
+                tabIndex={menuOpen ? -1 : 0}
+                aria-hidden={menuOpen}
+                aria-expanded={menuOpen}
+                aria-controls="site-navigation"
+                aria-label={menuOpen ? "Fechar menu" : "Abrir menu"}
+              >
+                <span />
+                <span />
+              </m.button>
+            </div>
           </div>
-        </div>
+        </header>
+
         <AnimatePresence>
           {menuOpen ? (
-            <m.nav
-              ref={mobileNavRef}
-              id="mobile-navigation"
-              className="mobile-nav"
-              aria-label="Navegação mobile"
-              initial={{ opacity: 0, y: -12 }}
-              animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, y: -10 }}
-              transition={{ duration: 0.2 }}
+            <m.div
+              className="menu-layer"
+              initial={{ clipPath: "inset(0 0 100% 0)" }}
+              animate={{ clipPath: "inset(0 0 0 0)" }}
+              exit={{ clipPath: "inset(0 0 100% 0)" }}
+              transition={{ duration: 0.26, ease: [0.22, 1, 0.36, 1] }}
             >
-              <a href="#servicos" onClick={closeMenu}>Serviços</a>
-              <a href="#projetos" onClick={closeMenu}>Projetos</a>
-              <a href="#processo" onClick={closeMenu}>Como fazemos</a>
-              <a href="#contato" onClick={closeMenu}>Contato</a>
-            </m.nav>
+              <a
+                className="menu-layer-brand"
+                href="#inicio"
+                onClick={closeMenu}
+                aria-label="Aurevion — início"
+              >
+                <BrandMark />
+              </a>
+              <button
+                ref={menuCloseRef}
+                className="menu-close"
+                type="button"
+                onClick={() => {
+                  setMenuOpen(false);
+                  window.requestAnimationFrame(() => menuButtonRef.current?.focus());
+                }}
+                aria-label="Fechar menu"
+              >
+                <span aria-hidden="true" />
+                <span aria-hidden="true" />
+              </button>
+              <nav
+                ref={menuRef}
+                id="site-navigation"
+                className="menu-panel shell"
+                aria-label="Navegação principal"
+              >
+                <div className="menu-links">
+                  {navigation.map((item) => (
+                    <a key={item.href} href={item.href} onClick={closeMenu}>{item.label}</a>
+                  ))}
+                </div>
+                <div className="menu-side">
+                  <span>Quer tirar uma ideia do papel?</span>
+                  <WhatsAppLink className="menu-whatsapp" location="menu">
+                    Conversar no WhatsApp
+                  </WhatsAppLink>
+                </div>
+              </nav>
+            </m.div>
           ) : null}
         </AnimatePresence>
-      </header>
 
-      <main id="conteudo">
-        <section className="hero" id="inicio">
-          <div className="hero-inner shell">
+        <main id="conteudo">
+          <section className="hero" id="inicio">
+            <div className="hero-copy shell">
+              <m.p
+                className="hero-kicker"
+                initial={false}
+              >
+                Tecnologia pensada para o seu negócio
+              </m.p>
+              <m.h1
+                initial={false}
+              >
+                Sites que explicam o seu valor. <span>Sistemas que fazem o trabalho avançar.</span>
+              </m.h1>
+              <div className="hero-bottom">
+                <p>
+                  A Aurevion projeta sites, sistemas e automações em torno do jeito
+                  que sua empresa realmente trabalha.
+                </p>
+                <div className="hero-actions">
+                  <WhatsAppLink className="button button-primary" location="hero">
+                    Quero construir meu projeto
+                  </WhatsAppLink>
+                  <a className="text-action" href="#demonstracao">
+                    Ver como funciona
+                  </a>
+                </div>
+              </div>
+            </div>
+
             <m.div
-              className="hero-copy"
-              initial={{ opacity: 0, y: 28 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.72, delay: 0.08 }}
+              className="hero-film shell"
+              initial={false}
             >
-              <div className="eyebrow eyebrow-light"><span /> Tecnologia com direção</div>
-              <h1>Sites e sistemas que fazem sua empresa <em>avançar.</em></h1>
-              <p className="hero-subtitle">
-                A Aurevion transforma ideias em experiências digitais claras, bonitas e prontas para gerar novas oportunidades.
-              </p>
-              <div className="hero-actions">
-                <WhatsAppLink className="button button-primary" location="hero">
-                  Conversar no WhatsApp
-                </WhatsAppLink>
-                <m.a className="button button-ghost" href="#servicos" whileHover={{ y: -2 }} whileTap={{ scale: 0.985 }}>Conhecer soluções</m.a>
-              </div>
+              <video
+                ref={videoRef}
+                className="hero-video"
+                muted
+                loop
+                playsInline
+                preload="metadata"
+                poster="/aurevion-hero-poster.png"
+                aria-label="Demonstração audiovisual de um fluxo de sistema da Aurevion"
+                onPlay={() => setVideoPlaying(true)}
+                onPause={() => setVideoPlaying(false)}
+              >
+                <source src="/aurevion-hero.mp4" type="video/mp4" />
+              </video>
+              <div className="film-shade" aria-hidden="true" />
+              <span className="film-caption">Aurevion / System motion</span>
+              <button className="film-control" type="button" onClick={toggleVideo}>
+                <span aria-hidden="true">{videoPlaying ? "Ⅱ" : "▶"}</span>
+                {videoPlaying ? "Pausar" : "Reproduzir"}
+              </button>
             </m.div>
+          </section>
 
-            <m.div
-              className="hero-stage"
-              aria-label="Filme de marca da Aurevion"
-              initial={{ opacity: 0, y: 24, scale: 0.97 }}
-              animate={{ opacity: 1, y: 0, scale: 1 }}
-              transition={{ duration: 0.78, delay: 0.2 }}
+          <section className="problem-section shell">
+            <p className="problem-lead">Quando a tecnologia não acompanha a operação,</p>
+            <div className="problem-lines">
+              <p>planilha vira sistema paralelo.</p>
+              <p>mensagem vira processo.</p>
+              <p>e ninguém enxerga o todo.</p>
+            </div>
+          </section>
+
+          <section className="solutions-section" id="solucoes">
+            <div className="shell solutions-intro">
+              <span className="section-label">O que a Aurevion constrói</span>
+              <h2>Clareza para quem compra. Controle para quem opera.</h2>
+            </div>
+
+            <article
+              className="solution-chapter solution-site shell"
+              data-track="service_view"
+              data-track-label="sites"
             >
-              <div className="hero-media">
-                <video
-                  className="hero-video"
-                  autoPlay={!prefersReducedMotion}
-                  muted
-                  loop={!prefersReducedMotion}
-                  playsInline
-                  preload="metadata"
-                  poster="/aurevion-hero-poster.png"
-                  aria-label="Composição audiovisual da Aurevion: tecnologia com direção"
-                >
-                  <source src="/aurevion-hero.mp4" type="video/mp4" />
-                </video>
-                <div className="hero-media-shade" aria-hidden="true" />
+              <div className="solution-copy">
+                <span>Sites</span>
+                <h3>Seu valor precisa ser entendido antes de ser comparado.</h3>
+                <p>
+                  Criamos sites rápidos e responsivos que organizam a mensagem,
+                  conduzem a atenção e deixam o próximo passo evidente.
+                </p>
+                <ul>
+                  <li>Estratégia de conteúdo</li>
+                  <li>Design responsivo</li>
+                  <li>Conversão pelo WhatsApp</li>
+                </ul>
               </div>
-            </m.div>
-          </div>
-
-        </section>
-
-        <section className="section services" id="servicos">
-          <div className="shell">
-            <div className="section-heading split-heading">
-              <div>
-                <div className="eyebrow"><span /> O que construímos</div>
-                <h2>Digital, do jeito que<br />seu negócio precisa.</h2>
+              <div className="site-composition" aria-label="Estrutura de mensagem de um site">
+                <div className="site-statement">Uma ideia forte,<br />sem ruído.</div>
+                <div className="site-proof"><span>Mensagem</span><span>Contexto</span><span>Ação</span></div>
+                <span className="site-cut" aria-hidden="true" />
               </div>
-              <p>Do primeiro contato à operação do dia a dia, criamos a tecnologia certa para cada objetivo.</p>
-            </div>
+            </article>
 
-            <div className="services-grid">
-              {services.map((service, index) => (
-                <m.article
-                  className={`service-card accent-${service.accent}`}
-                  key={service.title}
-                  initial={{ opacity: 0, y: 18 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  viewport={{ once: true, margin: "-70px" }}
-                  transition={{ delay: index * 0.07 }}
-                >
-                  <div className="service-header">
-                    <div className="service-icon"><ServiceGlyph kind={service.icon} /></div>
-                    <span className="service-label">{service.label}</span>
-                  </div>
-                  <div className="service-copy">
-                    <h3>{service.title}</h3>
-                    <p>{service.text}</p>
-                  </div>
-                  <div className="service-highlights" aria-label={`Inclui ${service.highlights.join(", ")}`}>
-                    {service.highlights.map((highlight) => <span key={highlight}>{highlight}</span>)}
-                  </div>
-                </m.article>
-              ))}
-            </div>
-          </div>
-        </section>
-
-        <section className="section projects" id="projetos">
-          <div className="shell">
-            <div className="section-heading split-heading project-heading">
-              <div>
-                <div className="eyebrow"><span /> O que podemos criar</div>
-                <h2>Experiências digitais<br />com acabamento de verdade.</h2>
+            <article
+              className="solution-chapter solution-system shell"
+              data-track="service_view"
+              data-track-label="sistemas"
+            >
+              <div className="system-composition" aria-label="Fluxo de um sistema sob medida">
+                <span className="system-track track-in" aria-hidden="true" />
+                <span className="system-track track-out" aria-hidden="true" />
+                <div className="system-input"><small>Entrada</small><strong>Solicitação recebida</strong></div>
+                <div className="system-core"><span>A</span><small>Regras da operação</small></div>
+                <div className="system-output"><small>Ação</small><strong>Equipe certa acionada</strong></div>
               </div>
-              <p>Interfaces que mostram como sites, sistemas e automações podem trabalhar juntos para melhorar a experiência do cliente e da equipe.</p>
-            </div>
+              <div className="solution-copy">
+                <span>Sistemas</span>
+                <h3>O software deve se adaptar ao trabalho — não o contrário.</h3>
+                <p>
+                  Transformamos rotinas dispersas em fluxos claros, conectando
+                  informações e reduzindo trabalho manual desnecessário.
+                </p>
+                <ul>
+                  <li>Sistemas web sob medida</li>
+                  <li>Automação de processos</li>
+                  <li>Integração entre ferramentas</li>
+                </ul>
+              </div>
+            </article>
+          </section>
 
-            <div className="projects-grid">
-              {projects.map((project, index) => (
-                <m.article
-                  className={`project-card project-${project.theme}`}
-                  key={project.title}
-                  initial={{ opacity: 0, y: 30 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  viewport={{ once: true, margin: "-80px" }}
-                  transition={{ delay: index * 0.06 }}
-                >
-                  <ProjectVisual kind={project.kind} />
-                  <div className="project-info">
-                    <div className="project-copy">
-                      <h3>{project.title}</h3>
-                      <p>{project.description}</p>
-                      <div className="project-tags">
-                        {project.tags.map((tag) => <span key={tag}>{tag}</span>)}
+          <AurevionFlow />
+
+          <section
+            className="demo-section"
+            id="demonstracao"
+            data-track="case_study_view"
+            data-track-label="demo-produto"
+          >
+            <div className="shell">
+              <div className="demo-heading">
+                <span className="section-label">Demonstração de produto</span>
+                <h2>Um sistema deve tornar a próxima ação óbvia.</h2>
+                <p>
+                  Explore três visões de uma mesma ideia: informação organizada,
+                  contexto preservado e menos passos entre intenção e execução.
+                </p>
+              </div>
+
+              <div className="demo-console">
+                <div className="demo-tabs" role="tablist" aria-label="Visões do sistema">
+                  {demoTabs.map((tab) => (
+                    <button
+                      key={tab.id}
+                      id={`tab-${tab.id}`}
+                      type="button"
+                      role="tab"
+                      aria-selected={activeDemo === tab.id}
+                      aria-controls={`panel-${tab.id}`}
+                      tabIndex={activeDemo === tab.id ? 0 : -1}
+                      onClick={() => selectDemo(tab.id)}
+                      onKeyDown={(event) => {
+                        const currentIndex = demoTabs.findIndex((item) => item.id === tab.id);
+                        let nextIndex = currentIndex;
+                        if (event.key === "ArrowRight") nextIndex = (currentIndex + 1) % demoTabs.length;
+                        if (event.key === "ArrowLeft") nextIndex = (currentIndex - 1 + demoTabs.length) % demoTabs.length;
+                        if (event.key === "Home") nextIndex = 0;
+                        if (event.key === "End") nextIndex = demoTabs.length - 1;
+                        if (nextIndex === currentIndex) return;
+                        event.preventDefault();
+                        const nextId = demoTabs[nextIndex].id;
+                        selectDemo(nextId);
+                        window.requestAnimationFrame(() => {
+                          document.getElementById(`tab-${nextId}`)?.focus();
+                        });
+                      }}
+                    >
+                      {tab.label}
+                    </button>
+                  ))}
+                </div>
+
+                <div className="demo-panel-copy">
+                  {demoTabs.map((tab) =>
+                    tab.id === activeDemo ? (
+                      <div key={tab.id}>
+                        <h3>{tab.title}</h3>
+                        <p>{tab.text}</p>
                       </div>
-                    </div>
-                  </div>
-                </m.article>
-              ))}
-            </div>
-          </div>
-        </section>
+                    ) : null,
+                  )}
+                </div>
 
-        <section className="section principles" id="processo">
-          <div className="shell principles-shell">
-            <div className="principles-intro">
-              <div className="eyebrow eyebrow-light"><span /> Nosso jeito</div>
-              <h2>Simples para você.<br /><em>Bem construído por nós.</em></h2>
-              <p>Entendemos o objetivo, desenhamos a experiência e desenvolvemos uma solução pronta para funcionar bem hoje e evoluir amanhã.</p>
-              <WhatsAppLink className="text-link" location="diferenciais">Falar sobre seu projeto</WhatsAppLink>
-            </div>
-            <div className="principles-list">
-              {principles.map((principle) => (
-                <m.article
-                  className="principle-item"
-                  key={principle.title}
-                  initial={{ opacity: 0, y: 20 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  viewport={{ once: true, margin: "-80px" }}
+                <div
+                  className="demo-viewport"
+                  id={`panel-${activeDemo}`}
+                  role="tabpanel"
+                  aria-labelledby={`tab-${activeDemo}`}
                 >
-                  <span className="principle-mark" aria-hidden="true" />
-                  <div><h3>{principle.title}</h3><p>{principle.text}</p></div>
-                </m.article>
-              ))}
-            </div>
-          </div>
-        </section>
-
-        <section className="section contact" id="contato">
-          <div className="shell contact-shell">
-            <div className="contact-copy">
-              <div className="eyebrow"><span /> Vamos conversar</div>
-              <h2>Vamos construir algo <em>muito bom.</em></h2>
-              <p>Conte o que sua empresa precisa. A Aurevion ajuda a encontrar o melhor caminho e transforma a ideia em uma solução digital de verdade.</p>
-              <div className="contact-direct">
-                <span>Prefere ir direto?</span>
-                <WhatsAppLink className="contact-phone" location="contato-direto">+55 27 92002-6247</WhatsAppLink>
+                  <AnimatePresence mode="wait" initial={false}>
+                    <m.div
+                      key={activeDemo}
+                      initial={prefersReducedMotion ? false : { clipPath: "inset(0 100% 0 0)" }}
+                      animate={{ clipPath: "inset(0 0 0 0)" }}
+                      exit={prefersReducedMotion ? undefined : { clipPath: "inset(0 0 0 100%)" }}
+                      transition={{ duration: 0.28, ease: [0.65, 0, 0.35, 1] }}
+                    >
+                      <DemoPanel active={activeDemo} />
+                    </m.div>
+                  </AnimatePresence>
+                </div>
               </div>
             </div>
+          </section>
 
-            <m.form
-              className="contact-form"
-              onSubmit={submitContact}
-              initial={{ opacity: 0, y: 28 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true, margin: "-80px" }}
-            >
-              <div className="form-heading"><span>Conte um pouco sobre o projeto</span><small>Todos os campos são obrigatórios</small></div>
-              <label>
-                <span>Seu nome</span>
-                <input type="text" name="name" placeholder="Como podemos chamar você?" autoComplete="name" required minLength={2} />
-              </label>
-              <label>
-                <span>Seu e-mail</span>
-                <input type="email" name="email" placeholder="voce@empresa.com" autoComplete="email" required />
-              </label>
-              <label>
-                <span>Sobre o projeto</span>
-                <textarea name="message" placeholder="O que você quer criar ou melhorar?" rows={4} required minLength={10} />
-              </label>
-              <m.button className="button button-primary form-submit" type="submit" whileHover={{ y: -2 }} whileTap={{ scale: 0.99 }}>Enviar pelo WhatsApp</m.button>
-            </m.form>
-          </div>
-        </section>
-      </main>
+          <section className="process-section shell" id="processo">
+            <div className="process-heading">
+              <span className="section-label">Como trabalhamos</span>
+              <h2>Decisões claras antes de código.</h2>
+            </div>
+            <div className="process-list">
+              {processPhases.map((phase) => (
+                <article key={phase.title}>
+                  <h3>{phase.title}</h3>
+                  <p>{phase.text}</p>
+                </article>
+              ))}
+            </div>
+          </section>
 
-      <footer className="site-footer">
-        <div className="shell footer-main">
-          <div className="footer-brand">
-            <a className="brand brand-footer" href="#inicio" aria-label="Aurevion — voltar ao início">
-              <img src="/aurevion-symbol.png" alt="" width="44" height="44" />
-              <span>AUREVION</span>
-            </a>
-            <p>Tecnologia com direção.<br />Experiências digitais com propósito.</p>
+          <section className="faq-section shell">
+            <div className="faq-heading">
+              <span className="section-label">Perguntas frequentes</span>
+              <h2>Antes de começar.</h2>
+            </div>
+            <div className="faq-list">
+              {faqs.map((faq) => (
+                <details key={faq.question}>
+                  <summary>{faq.question}<span aria-hidden="true">+</span></summary>
+                  <p>{faq.answer}</p>
+                </details>
+              ))}
+            </div>
+          </section>
+
+          <section className="contact-section" id="contato">
+            <div className="contact-shell shell">
+              <div className="contact-copy">
+                <span className="section-label">Próximo passo</span>
+                <h2>O que hoje trava a sua empresa?</h2>
+                <p>
+                  Conte o cenário. A Aurevion ajuda a transformar o problema em um
+                  projeto claro de site, sistema ou automação.
+                </p>
+                <WhatsAppLink className="contact-direct" location="contact-direct">
+                  +55 27 92002-6247
+                </WhatsAppLink>
+              </div>
+
+              <form className="contact-form" onSubmit={submitContact} onFocus={startForm}>
+                <h3>Conte sobre o projeto</h3>
+                <label>
+                  <span>Nome</span>
+                  <input name="name" type="text" autoComplete="name" required minLength={2} />
+                </label>
+                <label>
+                  <span>E-mail</span>
+                  <input name="email" type="email" autoComplete="email" required />
+                </label>
+                <label>
+                  <span>O que você quer criar ou melhorar?</span>
+                  <textarea name="message" rows={4} required minLength={10} />
+                </label>
+                <m.button className="button button-primary form-submit" type="submit" whileTap={{ transform: "scale(0.99)" }}>
+                  Enviar pelo WhatsApp
+                </m.button>
+              </form>
+            </div>
+          </section>
+        </main>
+
+        <footer className="site-footer">
+          <div className="footer-inner shell">
+            <a href="#inicio" aria-label="Aurevion — voltar ao início"><BrandMark compact /></a>
+            <p>Tecnologia com direção.</p>
+            <div className="footer-actions">
+              <a href="#solucoes">Soluções</a>
+              <WhatsAppLink className="footer-whatsapp" location="footer">WhatsApp</WhatsAppLink>
+            </div>
           </div>
-          <div className="footer-links">
-            <div><h3>Navegação</h3><a href="#servicos">Serviços</a><a href="#projetos">Projetos</a><a href="#processo">Como fazemos</a></div>
-            <div><h3>Contato</h3><WhatsAppLink className="footer-link" location="footer">WhatsApp</WhatsAppLink><a href="#contato">Enviar briefing</a><a href="https://github.com/aureviontecnologia/aurevion-site" target="_blank" rel="noreferrer">GitHub</a></div>
+          <div className="footer-bottom shell">
+            <span>© {new Date().getFullYear()} Aurevion</span>
+            <span>Sites · Sistemas · Automação</span>
           </div>
-        </div>
-        <div className="shell footer-bottom">
-          <span>© {new Date().getFullYear()} Aurevion. Todos os direitos reservados.</span>
-          <span>Design · Tecnologia · Evolução</span>
-        </div>
-      </footer>
-        </>
+        </footer>
       </LazyMotion>
     </MotionConfig>
   );

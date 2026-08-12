@@ -30,15 +30,16 @@ test("server-renders the Aurevion conversion landing page", async () => {
 
   const html = await response.text();
   assert.match(html, /<html[^>]*lang="pt-BR"/i);
-  assert.match(html, /<title>Aurevion \| Sites e sistemas sob medida<\/title>/i);
-  assert.match(html, /Sites e sistemas que fazem sua empresa/i);
-  assert.match(html, /Sites que apresentam e convertem/i);
-  assert.match(html, /Sistemas que organizam e escalam/i);
-  assert.match(html, /O que podemos criar/i);
+  assert.match(html, /<title>Aurevion \| Sites, sistemas e automação sob medida<\/title>/i);
+  assert.match(html, /Sites que explicam o seu valor/i);
+  assert.match(html, /Seu valor precisa ser entendido/i);
+  assert.match(html, /O software deve se adaptar ao trabalho/i);
+  assert.match(html, /Demonstração de produto/i);
+  assert.match(html, /Aurevion Flow/i);
   assert.doesNotMatch(html, /Nota de transparência/i);
   assert.doesNotMatch(html, /Interface demonstrativa/i);
   assert.doesNotMatch(html, /Abriremos o WhatsApp/i);
-  assert.match(html, /Visão operacional/i);
+  assert.match(html, /Visão da operação/i);
   assert.doesNotMatch(html, /aurevion-higgs|Higgsfield/i);
   assert.match(html, /5527920026247/);
   assert.doesNotMatch(html, /codex-preview|Your site is taking shape|Building your site/i);
@@ -52,14 +53,15 @@ test("keeps accessibility, motion and starter cleanup explicit", async () => {
     readFile(new URL("../package.json", import.meta.url), "utf8"),
   ]);
 
-  assert.match(page, /MotionConfig reducedMotion="user"/);
+  assert.match(page, /MotionConfig[\s\S]*?reducedMotion="user"/);
   assert.match(page, /aria-label="Navegação principal"/);
-  assert.match(page, /id="mobile-navigation"/);
+  assert.match(page, /id="site-navigation"/);
   assert.match(page, /useReducedMotion/);
-  assert.match(page, /function ProjectVisual/);
+  assert.match(page, /function DemoPanel/);
+  assert.match(page, /function AurevionFlow/);
   assert.doesNotMatch(page, /project\.image|aurevion-higgs|Higgsfield/i);
   assert.doesNotMatch(page, /ThemeGlyph|theme-toggle|aurevion-theme|data-theme/);
-  assert.doesNotMatch(page, /service-top|project-index|trust-points|number:\s*"0[1-9]"/);
+  assert.doesNotMatch(page, /service-top|project-index|trust-points|number:\s*"0[1-9]"|window-dots|system-window-bar/);
   assert.match(layout, /lang="pt-BR"/);
   assert.match(layout, /themeColor:\s*"#07101a"/);
   assert.match(layout, /application\/ld\+json/);
