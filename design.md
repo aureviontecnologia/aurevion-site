@@ -38,7 +38,8 @@ O ouro ocupa menos de 8% da tela e sempre indica direção, progresso ou ação.
 
 - Display: Bricolage Grotesque, 520–680, sempre romana.
 - Corpo: Instrument Sans, 400–600.
-- Utilitária: IBM Plex Mono, 500.
+- Rótulos: Instrument Sans, 600–650, sempre em caixa natural e sem espaçamento artificial.
+- IBM Plex Mono fica reservado a símbolos funcionais; não é usado em rótulos públicos.
 - Headlines usam quebras manuais e tracking negativo moderado; nunca itálico.
 
 ## Formas

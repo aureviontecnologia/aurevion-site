@@ -544,11 +544,11 @@ export default function Home() {
                 muted
                 playsInline
                 preload="metadata"
-                poster="/aurevion-flow-poster.webp"
+                poster="/aurevion-flow-v2-poster.webp"
                 aria-hidden="true"
                 tabIndex={-1}
               >
-                <source src="/aurevion-flow.mp4" type="video/mp4" />
+                <source src="/aurevion-flow-v2.mp4" type="video/mp4" />
               </video>
             </m.div>
           </section>
