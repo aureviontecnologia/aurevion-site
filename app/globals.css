@@ -624,22 +624,6 @@ img {
   content: "";
 }
 
-.project-visual figcaption {
-  position: absolute;
-  z-index: 8;
-  left: 22px;
-  bottom: 18px;
-  padding: 7px 10px;
-  border: 1px solid rgba(255,255,255,.12);
-  border-radius: 999px;
-  color: rgba(237,242,247,.7);
-  background: rgba(6,13,22,.68);
-  backdrop-filter: blur(10px);
-  font-family: var(--font-geist-mono, "SFMono-Regular"), Consolas, monospace;
-  font-size: .61rem;
-  letter-spacing: .025em;
-}
-
 .project-navy .project-visual {
   background:
     radial-gradient(circle at 75% 15%, rgba(79,137,194,.24), transparent 34%),
@@ -936,7 +920,6 @@ img {
 .contact-form input:-webkit-autofill:hover,
 .contact-form input:-webkit-autofill:focus { -webkit-text-fill-color: var(--ink); box-shadow: 0 0 0 1000px var(--surface-raised) inset; caret-color: var(--ink); }
 .form-submit { width: 100%; margin-top: 6px; border: 0; }
-.form-note { margin: 13px 0 0; color: var(--ink-soft); font-size: .68rem; text-align: center; }
 
 .site-footer { margin-top: 40px; color: rgba(255,255,255,.72); background: #060d16; }
 .footer-main { display: grid; grid-template-columns: 1fr auto; gap: 80px; padding-block: 76px; }
@@ -1006,7 +989,6 @@ img {
   .service-copy { padding-top: 54px; }
   .service-label { max-width: 140px; text-align: right; }
   .project-visual { height: 330px; padding: 22px; }
-  .project-visual figcaption { left: 14px; bottom: 12px; max-width: calc(100% - 28px); overflow: hidden; font-size: .52rem; text-overflow: ellipsis; white-space: nowrap; }
   .system-window { width: 98%; border-radius: 15px; }
   .system-window-bar { height: 28px; }
   .website-preview-nav { min-height: 42px; padding-inline: 18px; }

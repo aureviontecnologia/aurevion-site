@@ -154,7 +154,6 @@ function ProjectVisual({ kind }: { kind: (typeof projects)[number]["kind"] }) {
           </div>
           <div className="website-preview-status"><span>JORNADA CONECTADA</span><strong>Site + WhatsApp</strong></div>
         </div>
-        <figcaption>Interface demonstrativa · presença digital</figcaption>
       </figure>
     );
   }
@@ -170,7 +169,6 @@ function ProjectVisual({ kind }: { kind: (typeof projects)[number]["kind"] }) {
           <div className="flow-connector flow-connector-two" />
           <div className="flow-node flow-end"><small>DESTINO</small><strong>Próximo passo</strong><span>CRM e atendimento</span></div>
         </div>
-        <figcaption>Interface demonstrativa · automação de atendimento</figcaption>
       </figure>
     );
   }
@@ -198,7 +196,6 @@ function ProjectVisual({ kind }: { kind: (typeof projects)[number]["kind"] }) {
             </div>
           </div>
         </div>
-        <figcaption>Interface demonstrativa · painel sob medida</figcaption>
       </figure>
     );
   }
@@ -215,7 +212,6 @@ function ProjectVisual({ kind }: { kind: (typeof projects)[number]["kind"] }) {
         <i className="integration-line line-site" /><i className="integration-line line-crm" />
         <i className="integration-line line-whatsapp" /><i className="integration-line line-data" />
       </div>
-      <figcaption>Interface demonstrativa · jornada integrada</figcaption>
     </figure>
   );
 }
@@ -506,7 +502,6 @@ export default function Home() {
                 <textarea name="message" placeholder="O que você quer criar ou melhorar?" rows={4} required minLength={10} />
               </label>
               <m.button className="button button-primary form-submit" type="submit" whileHover={{ y: -2 }} whileTap={{ scale: 0.99 }}>Enviar pelo WhatsApp</m.button>
-              <p className="form-note">Abriremos o WhatsApp com sua mensagem pronta. Você poderá revisar antes de enviar.</p>
             </m.form>
           </div>
         </section>

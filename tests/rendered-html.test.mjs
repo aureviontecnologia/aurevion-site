@@ -36,7 +36,8 @@ test("server-renders the Aurevion conversion landing page", async () => {
   assert.match(html, /Sistemas que organizam e escalam/i);
   assert.match(html, /O que podemos criar/i);
   assert.doesNotMatch(html, /Nota de transparência/i);
-  assert.match(html, /Interface demonstrativa · presença digital/i);
+  assert.doesNotMatch(html, /Interface demonstrativa/i);
+  assert.doesNotMatch(html, /Abriremos o WhatsApp/i);
   assert.match(html, /Visão operacional/i);
   assert.doesNotMatch(html, /aurevion-higgs|Higgsfield/i);
   assert.match(html, /5527920026247/);
