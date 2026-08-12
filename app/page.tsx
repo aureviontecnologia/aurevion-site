@@ -17,6 +17,10 @@ import {
 } from "motion/react";
 
 const WHATSAPP_NUMBER = "5527920026247";
+const SUPPORT_EMAIL = "aureviontecnologia@gmail.com";
+const SUPPORT_EMAIL_URL = `mailto:${SUPPORT_EMAIL}?subject=${encodeURIComponent(
+  "Suporte Aurevion",
+)}`;
 const WHATSAPP_URL = `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(
   "Olá! Gostaria de conhecer os serviços da Aurevion.",
 )}`;
@@ -507,7 +511,7 @@ export default function Home() {
                 className="hero-kicker"
                 initial={false}
               >
-                Tecnologia pensada para o seu negócio
+                Sites e sistemas sob medida
               </m.p>
               <m.h1
                 initial={false}
@@ -750,9 +754,15 @@ export default function Home() {
                   Conte o cenário. A Aurevion ajuda a transformar o problema em um
                   projeto claro de site, sistema ou automação.
                 </p>
-                <WhatsAppLink className="contact-direct" location="contact-direct">
-                  +55 27 92002-6247
-                </WhatsAppLink>
+                <div className="contact-channels">
+                  <WhatsAppLink className="contact-direct" location="contact-direct">
+                    +55 27 92002-6247
+                  </WhatsAppLink>
+                  <a className="contact-support" href={SUPPORT_EMAIL_URL}>
+                    <span>Suporte por e-mail</span>
+                    {SUPPORT_EMAIL}
+                  </a>
+                </div>
               </div>
 
               <form className="contact-form" onSubmit={submitContact} onFocus={startForm}>
@@ -783,6 +793,7 @@ export default function Home() {
             <p>Tecnologia com direção.</p>
             <div className="footer-actions">
               <a href="#solucoes">Soluções</a>
+              <a href={SUPPORT_EMAIL_URL}>Suporte: {SUPPORT_EMAIL}</a>
               <WhatsAppLink className="footer-whatsapp" location="footer">WhatsApp</WhatsAppLink>
             </div>
           </div>

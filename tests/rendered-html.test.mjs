@@ -32,6 +32,9 @@ test("server-renders the Aurevion conversion landing page", async () => {
   assert.match(html, /<html[^>]*lang="pt-BR"/i);
   assert.match(html, /<title>Aurevion \| Sites, sistemas e automação sob medida<\/title>/i);
   assert.match(html, /Sites que explicam o seu valor/i);
+  assert.match(html, /Sites e sistemas sob medida/i);
+  assert.match(html, /aureviontecnologia@gmail\.com/i);
+  assert.doesNotMatch(html, /Tecnologia pensada para o seu negócio/i);
   assert.match(html, /Seu valor precisa ser entendido/i);
   assert.match(html, /O software deve se adaptar ao trabalho/i);
   assert.match(html, /Demonstração de produto/i);
