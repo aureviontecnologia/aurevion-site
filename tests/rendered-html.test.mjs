@@ -30,24 +30,25 @@ test("server-renders the Aurevion conversion landing page", async () => {
 
   const html = await response.text();
   assert.match(html, /<html[^>]*lang="pt-BR"/i);
-  assert.match(html, /<title>Aurevion \| Sites, sistemas e automação sob medida<\/title>/i);
-  assert.match(html, /Sites que explicam o seu valor/i);
-  assert.match(html, /Sites e sistemas sob medida/i);
+  assert.match(html, /<title>Aurevion \| Sites e sistemas para empresas<\/title>/i);
+  assert.match(html, /Sites que apresentam sua empresa/i);
+  assert.match(html, /Sites e sistemas para empresas/i);
   assert.match(html, /aureviontecnologia@gmail\.com/i);
   assert.doesNotMatch(html, /Tecnologia pensada para o seu negócio/i);
-  assert.match(html, /Seu valor precisa ser entendido/i);
-  assert.match(html, /O software deve se adaptar ao trabalho/i);
-  assert.match(html, /Demonstração de produto/i);
-  assert.match(html, /Aurevion Flow/i);
+  assert.match(html, /Um site que explica sua empresa/i);
+  assert.match(html, /Um sistema que acompanha o trabalho/i);
+  assert.match(html, /Veja na prática/i);
+  assert.match(html, /Cada informação chega à pessoa certa/i);
   assert.doesNotMatch(html, /Nota de transparência/i);
   assert.doesNotMatch(html, /Interface demonstrativa/i);
   assert.doesNotMatch(html, /Abriremos o WhatsApp/i);
   assert.doesNotMatch(html, /Regras da operação|Pausar|Reproduzir|System motion/i);
   assert.match(html, /Sistema organiza e encaminha/i);
   assert.match(html, /aurevion-flow-v2\.mp4/i);
-  assert.match(html, /Visão da operação/i);
+  assert.match(html, /Trabalho da equipe/i);
   assert.doesNotMatch(html, /aurevion-higgs|Higgsfield/i);
   assert.match(html, /5527920026247/);
+  assert.doesNotMatch(html, /[—–‑]|e-mail|92002-6247/i);
   assert.doesNotMatch(html, /codex-preview|Your site is taking shape|Building your site/i);
 });
 
@@ -73,10 +74,12 @@ test("keeps accessibility, motion and starter cleanup explicit", async () => {
   assert.match(page, /aurevion-symbol-transparent\.png/);
   assert.match(page, /aurevion-flow-v2-poster\.webp/);
   assert.doesNotMatch(page, /ThemeGlyph|theme-toggle|aurevion-theme|data-theme/);
+  assert.doesNotMatch(page, /[—–‑]|e-mail|92002-6247/i);
   assert.doesNotMatch(page, /service-top|project-index|trust-points|number:\s*"0[1-9]"|window-dots|system-window-bar/);
   assert.match(layout, /lang="pt-BR"/);
   assert.match(layout, /themeColor:\s*"#07101a"/);
   assert.match(layout, /application\/ld\+json/);
+  assert.doesNotMatch(layout, /[—–‑]|92002-6247/i);
   assert.match(css, /color-scheme:\s*dark/);
   assert.doesNotMatch(css, /data-theme|theme-toggle|#f7f7f4|#ffffff/i);
   assert.match(css, /prefers-reduced-motion:\s*reduce/);

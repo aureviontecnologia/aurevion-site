@@ -36,20 +36,20 @@ const demoTabs = [
   {
     id: "operacao",
     label: "Operação",
-    title: "O trabalho aparece no lugar certo.",
-    text: "Demandas, responsáveis e próximos passos ficam visíveis sem depender de mensagens soltas.",
+    title: "Veja o que precisa ser feito.",
+    text: "Pedidos, responsáveis e próximos passos ficam organizados em um só lugar.",
   },
   {
     id: "comercial",
     label: "Comercial",
-    title: "Cada oportunidade segue uma jornada clara.",
-    text: "O contato entra, recebe contexto e avança para o atendimento sem perder informação pelo caminho.",
+    title: "Acompanhe cada novo contato.",
+    text: "Cada contato fica com as informações necessárias para o atendimento.",
   },
   {
     id: "integracoes",
-    label: "Integrações",
-    title: "As ferramentas deixam de trabalhar isoladas.",
-    text: "Site, formulário, WhatsApp e sistema trocam dados dentro de um fluxo desenhado para a empresa.",
+    label: "Conexões",
+    title: "Conecte as ferramentas da empresa.",
+    text: "Site, formulário, WhatsApp e sistema compartilham as mesmas informações.",
   },
 ] as const;
 
@@ -58,37 +58,37 @@ type DemoId = (typeof demoTabs)[number]["id"];
 const processPhases = [
   {
     title: "Entender",
-    text: "Mapeamos objetivo, rotina e pontos de atrito antes de falar em tela ou tecnologia.",
+    text: "Conversamos sobre a empresa, a rotina e o que precisa melhorar.",
   },
   {
-    title: "Prototipar",
-    text: "Transformamos a ideia em uma experiência navegável para validar o caminho cedo.",
+    title: "Planejar",
+    text: "Organizamos a solução e mostramos como ela vai funcionar.",
   },
   {
-    title: "Construir",
-    text: "Desenvolvemos com atenção a desempenho, manutenção e uso em qualquer dispositivo.",
+    title: "Criar",
+    text: "Desenvolvemos o projeto para funcionar bem no computador e no celular.",
   },
   {
-    title: "Evoluir",
-    text: "A solução nasce preparada para receber novos fluxos, integrações e melhorias.",
+    title: "Melhorar",
+    text: "Depois da entrega, o projeto pode receber novas funções e melhorias.",
   },
 ] as const;
 
 const faqs = [
   {
-    question: "A Aurevion trabalha com sites e sistemas?",
+    question: "A Aurevion cria sites e sistemas?",
     answer:
-      "Sim. Podemos criar desde uma presença digital focada em conversão até um sistema sob medida para organizar a operação da empresa.",
+      "Sim. Criamos sites para apresentar sua empresa e sistemas para organizar o trabalho.",
   },
   {
-    question: "É possível integrar ferramentas que já usamos?",
+    question: "Vocês conectam as ferramentas que já usamos?",
     answer:
-      "A viabilidade depende das integrações disponíveis em cada ferramenta. Primeiro entendemos o cenário e indicamos o caminho mais seguro.",
+      "Sim, quando as ferramentas permitem conexão. Primeiro analisamos o que sua empresa usa e indicamos a melhor opção.",
   },
   {
-    question: "Como começa um projeto?",
+    question: "Como o projeto começa?",
     answer:
-      "A primeira etapa é uma conversa objetiva sobre o problema, o resultado esperado e o que já existe hoje. Depois disso, definimos o próximo passo.",
+      "Começamos com uma conversa para entender o que sua empresa precisa e qual resultado você espera. Depois apresentamos o próximo passo.",
   },
 ] as const;
 
@@ -214,8 +214,8 @@ function DemoPanel({ active }: { active: DemoId }) {
     return (
       <div className="demo-scene demo-operation">
         <div className="demo-context">
-          <span>Visão da operação</span>
-          <strong>Trabalho em movimento</strong>
+          <span>Trabalho da equipe</span>
+          <strong>Tarefas organizadas</strong>
         </div>
         <div className="operation-board">
           <div className="operation-lane">
@@ -240,13 +240,13 @@ function DemoPanel({ active }: { active: DemoId }) {
     return (
       <div className="demo-scene demo-commercial">
         <div className="demo-context">
-          <span>Jornada comercial</span>
-          <strong>Do interesse ao atendimento</strong>
+          <span>Atendimento comercial</span>
+          <strong>Do contato ao atendimento</strong>
         </div>
         <div className="journey-track" aria-hidden="true">
           <div className="journey-step"><i />Contato recebido</div>
           <span className="journey-line" />
-          <div className="journey-step is-current"><i />Contexto organizado</div>
+          <div className="journey-step is-current"><i />Informações organizadas</div>
           <span className="journey-line" />
           <div className="journey-step"><i />Equipe acionada</div>
           <span className="journey-line" />
@@ -259,27 +259,27 @@ function DemoPanel({ active }: { active: DemoId }) {
   return (
     <div className="demo-scene demo-integrations">
       <div className="demo-context">
-        <span>Ecossistema conectado</span>
-        <strong>Uma informação, vários destinos</strong>
+        <span>Ferramentas conectadas</span>
+        <strong>A mesma informação em toda a empresa</strong>
       </div>
       <div
         className="integration-map"
-        aria-label="Formulário e WhatsApp conectados ao CRM e à equipe"
+        aria-label="Formulário e WhatsApp conectados ao cadastro de clientes e à equipe"
       >
         <div className="integration-group">
-          <small>Entradas</small>
+          <small>Onde começa</small>
           <div className="map-node">Formulário</div>
           <div className="map-node">WhatsApp</div>
         </div>
         <span className="integration-connector" aria-hidden="true" />
         <div className="map-core">
-          <small>Conexão</small>
+          <small>Organização</small>
           <strong>Informação organizada</strong>
         </div>
         <span className="integration-connector" aria-hidden="true" />
         <div className="integration-group">
-          <small>Destinos</small>
-          <div className="map-node">CRM</div>
+          <small>Onde chega</small>
+          <div className="map-node">Clientes</div>
           <div className="map-node">Equipe</div>
         </div>
       </div>
@@ -297,15 +297,15 @@ function AurevionFlow() {
     >
       <div className="flow-sticky shell">
         <div className="flow-copy">
-          <span className="section-label">Aurevion Flow</span>
-          <h2>O processo certo, conectado de ponta a ponta.</h2>
+          <span className="section-label">Como funciona</span>
+          <h2>Cada informação chega à pessoa certa.</h2>
           <p>
-            Em vez de adicionar mais uma ferramenta, desenhamos como a informação
-            deve entrar, circular e chegar a quem precisa agir.
+            O contato entra, o sistema organiza e a equipe recebe o que precisa
+            para agir.
           </p>
         </div>
 
-        <div className="flow-map" aria-label="Exemplo de fluxo digital conectado">
+        <div className="flow-map" aria-label="Exemplo de informações organizadas">
           <div className="flow-entry">
             <small>Entrada</small>
             <strong>Novo contato</strong>
@@ -313,12 +313,12 @@ function AurevionFlow() {
           <span className="flow-connector" aria-hidden="true" />
           <div className="flow-core">
             <small>Organização</small>
-            <strong>Informação pronta para agir</strong>
+            <strong>Informações organizadas</strong>
           </div>
           <span className="flow-connector" aria-hidden="true" />
           <div className="flow-results">
             <small>Resultado</small>
-            <strong>Equipe responsável acionada</strong>
+            <strong>Equipe acionada</strong>
           </div>
         </div>
       </div>
@@ -462,7 +462,7 @@ export default function Home() {
       "Olá! Gostaria de conversar sobre um projeto com a Aurevion.",
       "",
       `Nome: ${name}`,
-      `E-mail: ${email}`,
+      `Email: ${email}`,
       `Projeto: ${message}`,
     ].join("\n");
 
@@ -482,7 +482,7 @@ export default function Home() {
 
         <header className="site-header">
           <div className="header-inner shell">
-            <a className="brand" href="#inicio" onClick={closeMenu} aria-label="Aurevion — início">
+            <a className="brand" href="#inicio" onClick={closeMenu} aria-label="Página inicial da Aurevion">
               <BrandMark />
             </a>
             <span className="header-capabilities">Sites · Sistemas · Automação</span>
@@ -523,7 +523,7 @@ export default function Home() {
                 className="menu-layer-brand"
                 href="#inicio"
                 onClick={closeMenu}
-                aria-label="Aurevion — início"
+                aria-label="Página inicial da Aurevion"
               >
                 <BrandMark />
               </a>
@@ -552,7 +552,7 @@ export default function Home() {
                   ))}
                 </div>
                 <div className="menu-side">
-                  <span>Quer tirar uma ideia do papel?</span>
+                  <span>Tem um projeto para sua empresa?</span>
                   <WhatsAppLink className="menu-whatsapp" location="menu">
                     Conversar no WhatsApp
                   </WhatsAppLink>
@@ -569,21 +569,21 @@ export default function Home() {
                 className="hero-kicker"
                 initial={false}
               >
-                Sites e sistemas sob medida
+                Sites e sistemas para empresas
               </m.p>
               <m.h1
                 initial={false}
               >
-                Sites que explicam o seu valor. <span>Sistemas que fazem o trabalho avançar.</span>
+                Sites que apresentam sua empresa. <span>Sistemas que organizam o trabalho.</span>
               </m.h1>
               <div className="hero-bottom">
                 <p>
-                  A Aurevion projeta sites, sistemas e automações em torno do jeito
-                  que sua empresa realmente trabalha.
+                  A Aurevion cria sites, sistemas e automações para sua empresa
+                  vender melhor e trabalhar com mais organização.
                 </p>
                 <div className="hero-actions">
                   <WhatsAppLink className="button button-primary" location="hero">
-                    Quero construir meu projeto
+                    Quero falar sobre meu projeto
                   </WhatsAppLink>
                   <a className="text-action" href="#demonstracao">
                     Ver como funciona
@@ -612,18 +612,18 @@ export default function Home() {
           </section>
 
           <section className="problem-section shell">
-            <p className="problem-lead">Quando a tecnologia não acompanha a operação,</p>
+            <p className="problem-lead">Quando faltam as ferramentas certas,</p>
             <div className="problem-lines">
-              <p>planilha vira sistema paralelo.</p>
-              <p>mensagem vira processo.</p>
-              <p>e ninguém enxerga o todo.</p>
+              <p>as planilhas ficam espalhadas.</p>
+              <p>as mensagens se perdem.</p>
+              <p>e a equipe perde tempo.</p>
             </div>
           </section>
 
           <section className="solutions-section" id="solucoes">
             <div className="shell solutions-intro">
-              <span className="section-label">O que a Aurevion constrói</span>
-              <h2>Clareza para quem compra. Controle para quem opera.</h2>
+              <span className="section-label">Soluções para sua empresa</span>
+              <h2>Sites para vender. Sistemas para organizar.</h2>
             </div>
 
             <article
@@ -633,15 +633,15 @@ export default function Home() {
             >
               <div className="solution-copy">
                 <span>Sites</span>
-                <h3>Seu valor precisa ser entendido antes de ser comparado.</h3>
+                <h3>Um site que explica sua empresa e facilita o contato.</h3>
                 <p>
-                  Criamos sites rápidos e responsivos que organizam a mensagem,
-                  conduzem a atenção e deixam o próximo passo evidente.
+                  Criamos sites rápidos, fáceis de usar e preparados para gerar
+                  contatos pelo WhatsApp.
                 </p>
                 <ul>
-                  <li>Estratégia de conteúdo</li>
-                  <li>Design responsivo</li>
-                  <li>Conversão pelo WhatsApp</li>
+                  <li>Texto claro</li>
+                  <li>Funciona bem no celular</li>
+                  <li>Contato direto pelo WhatsApp</li>
                 </ul>
               </div>
               <div className="site-composition" aria-label="Estrutura de mensagem de um site">
@@ -650,13 +650,13 @@ export default function Home() {
                   <span>Mensagem clara</span>
                 </div>
                 <div className="site-statement">
-                  <small>O que sua empresa faz</small>
-                  <strong>Seu valor, explicado com clareza.</strong>
-                  <p>O cliente entende a proposta e encontra o próximo passo.</p>
+                  <small>O que sua empresa oferece</small>
+                  <strong>Sua empresa, apresentada com clareza.</strong>
+                  <p>O cliente entende e sabe como entrar em contato.</p>
                 </div>
                 <div className="site-proof">
-                  <div><small>Contexto</small><strong>Benefícios objetivos</strong></div>
-                  <div><small>Próximo passo</small><strong>Conversa no WhatsApp</strong></div>
+                  <div><small>Informações</small><strong>O que o cliente precisa saber</strong></div>
+                  <div><small>Contato</small><strong>Falar no WhatsApp</strong></div>
                 </div>
               </div>
             </article>
@@ -666,7 +666,7 @@ export default function Home() {
               data-track="service_view"
               data-track-label="sistemas"
             >
-              <div className="system-composition" aria-label="Fluxo de um sistema sob medida">
+              <div className="system-composition" aria-label="Exemplo de sistema para uma empresa">
                 <div className="system-input"><small>Entrada</small><strong>Solicitação recebida</strong></div>
                 <span className="system-connector" aria-hidden="true" />
                 <div className="system-core"><small>Organização</small><strong>Sistema organiza e encaminha</strong></div>
@@ -675,15 +675,15 @@ export default function Home() {
               </div>
               <div className="solution-copy">
                 <span>Sistemas</span>
-                <h3>O software deve se adaptar ao trabalho — não o contrário.</h3>
+                <h3>Um sistema que acompanha o trabalho da sua empresa.</h3>
                 <p>
-                  Transformamos rotinas dispersas em fluxos claros, conectando
-                  informações e reduzindo trabalho manual desnecessário.
+                  Criamos sistemas para organizar tarefas, informações e
+                  atendimentos em um só lugar.
                 </p>
                 <ul>
-                  <li>Sistemas web sob medida</li>
-                  <li>Automação de processos</li>
-                  <li>Integração entre ferramentas</li>
+                  <li>Sistemas para sua rotina</li>
+                  <li>Menos tarefas manuais</li>
+                  <li>Ferramentas conectadas</li>
                 </ul>
               </div>
             </article>
@@ -699,11 +699,11 @@ export default function Home() {
           >
             <div className="shell">
               <div className="demo-heading">
-                <span className="section-label">Demonstração de produto</span>
-                <h2>Um sistema deve tornar a próxima ação óbvia.</h2>
+                <span className="section-label">Veja na prática</span>
+                <h2>Informações claras para tomar decisões.</h2>
                 <p>
-                  Explore três visões de uma mesma ideia: informação organizada,
-                  contexto preservado e menos passos entre intenção e execução.
+                  Veja como um sistema pode organizar o trabalho, o atendimento
+                  e as ferramentas da sua empresa.
                 </p>
               </div>
 
@@ -775,8 +775,8 @@ export default function Home() {
 
           <section className="process-section shell" id="processo">
             <div className="process-heading">
-              <span className="section-label">Como trabalhamos</span>
-              <h2>Decisões claras antes de código.</h2>
+              <span className="section-label">Etapas do projeto</span>
+              <h2>Um processo simples e claro.</h2>
             </div>
             <div className="process-list">
               {processPhases.map((phase) => (
@@ -790,8 +790,8 @@ export default function Home() {
 
           <section className="faq-section shell">
             <div className="faq-heading">
-              <span className="section-label">Perguntas frequentes</span>
-              <h2>Antes de começar.</h2>
+              <span className="section-label">Dúvidas comuns</span>
+              <h2>O que você precisa saber.</h2>
             </div>
             <div className="faq-list">
               {faqs.map((faq, index) => (
@@ -808,35 +808,35 @@ export default function Home() {
           <section className="contact-section" id="contato">
             <div className="contact-shell shell">
               <div className="contact-copy">
-                <span className="section-label">Próximo passo</span>
-                <h2>O que hoje trava a sua empresa?</h2>
+                <span className="section-label">Fale com a Aurevion</span>
+                <h2>O que sua empresa precisa melhorar?</h2>
                 <p>
-                  Conte o cenário. A Aurevion ajuda a transformar o problema em um
-                  projeto claro de site, sistema ou automação.
+                  Conte o que precisa. Vamos indicar uma solução de site, sistema
+                  ou automação.
                 </p>
                 <div className="contact-channels">
                   <WhatsAppLink className="contact-direct" location="contact-direct">
-                    +55 27 92002-6247
+                    +55 27 92002 6247
                   </WhatsAppLink>
                   <a className="contact-support" href={SUPPORT_EMAIL_URL}>
-                    <span>Suporte por e-mail</span>
+                    <span>Suporte por email</span>
                     {SUPPORT_EMAIL}
                   </a>
                 </div>
               </div>
 
               <form className="contact-form" onSubmit={submitContact} onFocus={startForm}>
-                <h3>Conte sobre o projeto</h3>
+                <h3>Conte o que sua empresa precisa</h3>
                 <label>
                   <span>Nome</span>
                   <input name="name" type="text" autoComplete="name" required minLength={2} />
                 </label>
                 <label>
-                  <span>E-mail</span>
+                  <span>Email</span>
                   <input name="email" type="email" autoComplete="email" required />
                 </label>
                 <label>
-                  <span>O que você quer criar ou melhorar?</span>
+                  <span>O que você precisa criar ou melhorar?</span>
                   <textarea name="message" rows={4} required minLength={10} />
                 </label>
                 <m.button className="button button-primary form-submit" type="submit" whileTap={{ transform: "scale(0.99)" }}>
@@ -849,7 +849,7 @@ export default function Home() {
 
         <footer className="site-footer">
           <div className="footer-inner shell">
-            <a href="#inicio" aria-label="Aurevion — voltar ao início"><BrandMark compact /></a>
+            <a href="#inicio" aria-label="Voltar ao início da página"><BrandMark compact /></a>
             <p>Tecnologia com direção.</p>
             <div className="footer-actions">
               <a href="#solucoes">Soluções</a>

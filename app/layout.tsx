@@ -28,15 +28,15 @@ const gaId = process.env.NEXT_PUBLIC_GA_ID;
 
 export const metadata: Metadata = {
   metadataBase: new URL(siteUrl),
-  title: "Aurevion | Sites, sistemas e automação sob medida",
+  title: "Aurevion | Sites e sistemas para empresas",
   description:
-    "A Aurevion cria sites, sistemas e automações sob medida para organizar operações, conectar ferramentas e reduzir trabalho manual.",
+    "A Aurevion cria sites, sistemas e automações para ajudar empresas a vender, organizar tarefas e reduzir trabalho manual.",
   applicationName: "Aurevion",
   keywords: [
     "Aurevion",
     "desenvolvimento de sites",
     "landing pages",
-    "sistemas sob medida",
+    "sistemas para empresas",
     "automação de processos",
     "integração de sistemas",
   ],
@@ -62,22 +62,22 @@ export const metadata: Metadata = {
     locale: "pt_BR",
     url: "/",
     siteName: "Aurevion",
-    title: "Aurevion — Tecnologia com direção",
+    title: "Aurevion | Sites e sistemas para empresas",
     description:
-      "Sites, sistemas e automações sob medida para o jeito que sua empresa realmente trabalha.",
+      "Sites, sistemas e automações para sua empresa vender melhor e trabalhar com mais organização.",
     images: [
       {
         url: "/og.png",
         width: 1200,
         height: 630,
-        alt: "Aurevion — Tecnologia com direção",
+        alt: "Aurevion, sites e sistemas para empresas",
       },
     ],
   },
   twitter: {
     card: "summary_large_image",
-    title: "Aurevion — Tecnologia com direção",
-    description: "Sites, sistemas e automações sob medida.",
+    title: "Aurevion | Sites e sistemas para empresas",
+    description: "Sites, sistemas e automações para empresas.",
     images: ["/og.png"],
   },
   icons: {
@@ -103,7 +103,7 @@ const organizationSchema = {
   url: siteUrl,
   logo: `${siteUrl}/aurevion-symbol.png`,
   description:
-    "Desenvolvimento de sites, sistemas e automações sob medida.",
+    "Sites, sistemas e automações para empresas.",
   areaServed: "Brasil",
   serviceType: [
     "Desenvolvimento de sites",
@@ -112,7 +112,7 @@ const organizationSchema = {
   ],
   contactPoint: {
     "@type": "ContactPoint",
-    telephone: "+55-27-92002-6247",
+    telephone: "+5527920026247",
     contactType: "sales",
     availableLanguage: "Portuguese",
   },
