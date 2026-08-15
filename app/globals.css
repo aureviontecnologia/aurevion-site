@@ -554,8 +554,7 @@ p {
 .demo-heading h2,
 .process-heading h2,
 .faq-heading h2,
-.contact-copy h2,
-.flow-copy h2 {
+.contact-copy h2 {
   margin: 0;
   font-family: var(--font-display);
   font-weight: 520;
@@ -637,7 +636,7 @@ p {
 }
 
 .site-composition,
-.system-composition {
+.system-comparison {
   position: relative;
   min-width: 0;
   overflow: hidden;
@@ -714,50 +713,49 @@ p {
   font-weight: 650;
 }
 
-.system-composition {
+.system-comparison {
   min-height: 620px;
   display: grid;
-  grid-template-columns: minmax(0, 1fr) 38px minmax(0, 1.1fr) 38px minmax(0, 1fr);
+  grid-template-rows: repeat(2, minmax(0, 1fr));
+  padding: clamp(46px, 6vw, 78px);
+}
+
+.comparison-row {
+  display: grid;
+  grid-template-columns: minmax(110px, 0.35fr) minmax(0, 1fr);
+  gap: clamp(26px, 4vw, 62px);
   align-items: center;
-  padding: clamp(34px, 4vw, 56px);
+  padding-block: clamp(34px, 5vw, 62px);
 }
 
-.system-core,
-.system-input,
-.system-output {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  min-height: 170px;
-  padding: 22px;
-  background: var(--color-visual-surface);
+.comparison-row + .comparison-row {
+  border-top: 1px solid var(--color-visual-line);
 }
 
-.system-input small,
-.system-output small,
-.system-core small {
-  margin-bottom: 12px;
-  color: var(--color-gold-light);
+.comparison-row > span {
+  color: var(--color-ink-soft);
   font-family: var(--font-body);
-  font-size: 0.72rem;
+  font-size: 0.78rem;
   font-weight: 650;
-  letter-spacing: 0;
 }
 
-.system-input strong,
-.system-output strong,
-.system-core strong {
-  font-size: 0.9rem;
-  font-weight: 650;
-  line-height: 1.35;
+.comparison-row strong {
+  display: block;
+  max-width: 480px;
+  font-family: var(--font-display);
+  font-size: clamp(2.3rem, 4vw, 4.4rem);
+  font-weight: 520;
+  letter-spacing: -0.055em;
+  line-height: 0.98;
 }
 
-.system-core {
-  background: var(--color-visual-strong);
+.comparison-row p {
+  max-width: 430px;
+  margin: 20px 0 0;
+  color: var(--color-ink-soft);
+  line-height: 1.6;
 }
 
-.system-connector,
-.flow-connector,
 .integration-connector {
   position: relative;
   display: block;
@@ -765,8 +763,6 @@ p {
   background: var(--color-gold);
 }
 
-.system-connector::after,
-.flow-connector::after,
 .integration-connector::after {
   position: absolute;
   top: 50%;
@@ -777,78 +773,6 @@ p {
   border-right: 2px solid var(--color-gold);
   content: "";
   transform: translateY(-50%) rotate(45deg);
-}
-
-.flow-section {
-  min-height: auto;
-  border-top: 1px solid var(--color-line-soft);
-  background: var(--color-bg-deep);
-}
-
-.flow-sticky {
-  position: static;
-  min-height: auto;
-  display: grid;
-  grid-template-columns: minmax(300px, 0.68fr) minmax(560px, 1.32fr);
-  align-items: center;
-  gap: clamp(70px, 10vw, 148px);
-  padding-block: clamp(108px, 13vw, 170px);
-}
-
-.flow-copy h2 {
-  margin-top: 26px;
-  font-size: clamp(3rem, 5vw, 5.1rem);
-}
-
-.flow-copy p {
-  max-width: 500px;
-  margin: 30px 0 0;
-  color: var(--color-ink-soft);
-  line-height: 1.72;
-}
-
-.flow-map {
-  position: relative;
-  min-width: 0;
-  min-height: 300px;
-  display: grid;
-  grid-template-columns: minmax(0, 1fr) 44px minmax(0, 1.1fr) 44px minmax(0, 1fr);
-  align-items: center;
-}
-
-.flow-entry,
-.flow-results,
-.flow-core {
-  position: relative;
-  min-height: 172px;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  padding: 22px;
-  background: var(--color-visual-surface);
-}
-
-.flow-entry small,
-.flow-results small,
-.flow-core small {
-  margin-bottom: 12px;
-  color: var(--color-gold-light);
-  font-family: var(--font-body);
-  font-size: 0.72rem;
-  font-weight: 650;
-  letter-spacing: 0;
-}
-
-.flow-entry strong,
-.flow-results strong,
-.flow-core strong {
-  font-size: 0.84rem;
-  font-weight: 650;
-  line-height: 1.35;
-}
-
-.flow-core {
-  background: var(--color-visual-strong);
 }
 
 .demo-section {
@@ -1453,20 +1377,6 @@ p {
     max-width: 620px;
   }
 
-  .flow-sticky {
-    grid-template-columns: 1fr;
-    gap: 32px;
-    align-content: center;
-  }
-
-  .flow-copy {
-    max-width: 760px;
-  }
-
-  .flow-map {
-    min-height: 360px;
-  }
-
   .process-section,
   .faq-section {
     grid-template-columns: 0.62fr 1.38fr;
@@ -1533,22 +1443,12 @@ p {
   }
 
   .site-composition,
-  .system-composition {
+  .system-comparison {
     min-height: 520px;
   }
 
-  .solution-system .system-composition {
+  .solution-system .system-comparison {
     order: 2;
-  }
-
-  .flow-section {
-    min-height: auto;
-  }
-
-  .flow-sticky {
-    position: static;
-    min-height: auto;
-    padding-block: 100px;
   }
 
   .demo-console {
@@ -1694,14 +1594,13 @@ p {
   }
 
   .solution-copy h3,
-  .flow-copy h2,
   .process-heading h2,
   .faq-heading h2 {
     font-size: clamp(2.6rem, 11.5vw, 3.8rem);
   }
 
   .site-composition,
-  .system-composition {
+  .system-comparison {
     min-height: 430px;
   }
 
@@ -1721,48 +1620,31 @@ p {
     min-height: 96px;
   }
 
-  .system-composition {
+  .system-comparison {
+    padding: 30px;
+  }
+
+  .comparison-row {
     grid-template-columns: 1fr;
-    grid-template-rows: auto 34px auto 34px auto;
-    padding: 28px;
+    gap: 18px;
+    align-content: center;
   }
 
-  .system-core,
-  .system-input,
-  .system-output {
-    width: 100%;
-    min-height: 104px;
-    padding: 18px;
+  .comparison-row strong {
+    font-size: clamp(2.45rem, 11.5vw, 3.6rem);
   }
 
-  .system-connector,
-  .flow-connector,
   .integration-connector {
     width: 2px;
     height: 30px;
     justify-self: center;
   }
 
-  .system-connector::after,
-  .flow-connector::after,
   .integration-connector::after {
     top: auto;
     right: 50%;
     bottom: 0;
     transform: translateX(50%) rotate(135deg);
-  }
-
-  .flow-map {
-    min-height: auto;
-    grid-template-columns: 1fr;
-    grid-template-rows: auto 34px auto 34px auto;
-  }
-
-  .flow-entry,
-  .flow-core,
-  .flow-results {
-    width: 100%;
-    min-height: 112px;
   }
 
   .demo-panel-copy {

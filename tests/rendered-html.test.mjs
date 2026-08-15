@@ -38,12 +38,13 @@ test("server-renders the Aurevion conversion landing page", async () => {
   assert.match(html, /Um site que explica sua empresa/i);
   assert.match(html, /Um sistema que acompanha o trabalho/i);
   assert.match(html, /Veja na prática/i);
-  assert.match(html, /Cada informação chega à pessoa certa/i);
+  assert.match(html, /Informações espalhadas/i);
+  assert.match(html, /Trabalho em um só lugar/i);
   assert.doesNotMatch(html, /Nota de transparência/i);
   assert.doesNotMatch(html, /Interface demonstrativa/i);
   assert.doesNotMatch(html, /Abriremos o WhatsApp/i);
   assert.doesNotMatch(html, /Regras da operação|Pausar|Reproduzir|System motion/i);
-  assert.match(html, /Sistema organiza e encaminha/i);
+  assert.doesNotMatch(html, /Sistema organiza e encaminha/i);
   assert.match(html, /aurevion-flow-v2\.mp4/i);
   assert.match(html, /Trabalho da equipe/i);
   assert.doesNotMatch(html, /aurevion-higgs|Higgsfield/i);
@@ -65,7 +66,7 @@ test("keeps accessibility, motion and starter cleanup explicit", async () => {
   assert.match(page, /id="site-navigation"/);
   assert.match(page, /useReducedMotion/);
   assert.match(page, /function DemoPanel/);
-  assert.match(page, /function AurevionFlow/);
+  assert.doesNotMatch(page, /function AurevionFlow|flow-map|system-composition|system-connector/);
   assert.match(page, /function FaqItem/);
   assert.match(page, /aria-expanded=\{isOpen\}/);
   assert.match(page, /animate=\{\{ height: isOpen \? "auto" : 0/);

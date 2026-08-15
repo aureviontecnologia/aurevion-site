@@ -27,7 +27,6 @@ const WHATSAPP_URL = `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent
 
 const navigation = [
   { label: "Soluções", href: "#solucoes" },
-  { label: "Como funciona", href: "#fluxo" },
   { label: "Demonstração", href: "#demonstracao" },
   { label: "Contato", href: "#contato" },
 ] as const;
@@ -284,45 +283,6 @@ function DemoPanel({ active }: { active: DemoId }) {
         </div>
       </div>
     </div>
-  );
-}
-
-function AurevionFlow() {
-  return (
-    <section
-      className="flow-section"
-      id="fluxo"
-      data-track="service_view"
-      data-track-label="fluxo-aurevion"
-    >
-      <div className="flow-sticky shell">
-        <div className="flow-copy">
-          <span className="section-label">Como funciona</span>
-          <h2>Cada informação chega à pessoa certa.</h2>
-          <p>
-            O contato entra, o sistema organiza e a equipe recebe o que precisa
-            para agir.
-          </p>
-        </div>
-
-        <div className="flow-map" aria-label="Exemplo de informações organizadas">
-          <div className="flow-entry">
-            <small>Entrada</small>
-            <strong>Novo contato</strong>
-          </div>
-          <span className="flow-connector" aria-hidden="true" />
-          <div className="flow-core">
-            <small>Organização</small>
-            <strong>Informações organizadas</strong>
-          </div>
-          <span className="flow-connector" aria-hidden="true" />
-          <div className="flow-results">
-            <small>Resultado</small>
-            <strong>Equipe acionada</strong>
-          </div>
-        </div>
-      </div>
-    </section>
   );
 }
 
@@ -666,12 +626,21 @@ export default function Home() {
               data-track="service_view"
               data-track-label="sistemas"
             >
-              <div className="system-composition" aria-label="Exemplo de sistema para uma empresa">
-                <div className="system-input"><small>Entrada</small><strong>Solicitação recebida</strong></div>
-                <span className="system-connector" aria-hidden="true" />
-                <div className="system-core"><small>Organização</small><strong>Sistema organiza e encaminha</strong></div>
-                <span className="system-connector" aria-hidden="true" />
-                <div className="system-output"><small>Resultado</small><strong>Equipe responsável acionada</strong></div>
+              <div className="system-comparison" aria-label="Comparação da rotina antes e com um sistema">
+                <div className="comparison-row comparison-before">
+                  <span>Antes</span>
+                  <div>
+                    <strong>Informações espalhadas</strong>
+                    <p>Mensagens, planilhas e tarefas em lugares diferentes.</p>
+                  </div>
+                </div>
+                <div className="comparison-row comparison-after">
+                  <span>Com um sistema</span>
+                  <div>
+                    <strong>Trabalho em um só lugar</strong>
+                    <p>A equipe encontra o que precisa e sabe o que fazer.</p>
+                  </div>
+                </div>
               </div>
               <div className="solution-copy">
                 <span>Sistemas</span>
@@ -688,8 +657,6 @@ export default function Home() {
               </div>
             </article>
           </section>
-
-          <AurevionFlow />
 
           <section
             className="demo-section"
