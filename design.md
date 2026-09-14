@@ -1,73 +1,36 @@
-# Design — Aurevion
+# Aurevion: direção visual
 
-Sistema visual bloqueado para o site da Aurevion. A interface deve parecer construída a partir da operação de uma empresa — entrada, decisão e execução — e não a partir de um template SaaS.
+Revisão de 14/09/2026. Substitui a estrutura anterior de vídeos, fluxos e painéis conceituais a pedido do cliente.
 
-## Genre
+## Objetivo
 
-Modern-minimal com tensão editorial e atmosfera escura.
+Ajudar uma pessoa que cuida de uma empresa a identificar se precisa de site, sistema ou automação e iniciar uma conversa pelo WhatsApp. Não exigir conhecimento técnico nem cadastro.
 
-## Tese visual
+## Direção
 
-Cada visual deve ser entendido em uma leitura: entrada, organização e resultado. O símbolo “A” identifica a marca, mas não substitui conteúdo nem aparece como etapa isolada. Superfícies azul-petróleo organizam a informação; o dourado marca apenas o caminho ou a ação principal.
+Azul profundo e dourado da marca, com uma seção azul clara para tornar a leitura dos serviços mais leve. A principal evidência visual é uma captura real do site da TechReparos, com link para visitá-lo. Não usar dashboards inventados como prova de um produto existente.
 
-## Macroestrutura
+Estrutura: oferta e projeto real, serviços, contratação, dúvidas e contato. O processo é explicado em dois parágrafos, sem uma nova sequência de cards.
 
-- Marketing: hero editorial de largura total → demonstração audiovisual curta → diagnóstico em linhas → dois capítulos de serviço → fluxo operacional → demonstração de produto com vistas alternáveis → processo linear → FAQ → conversa.
-- Nada de sequência repetida “título centralizado + texto + três cards”.
-- Nenhum bloco existe apenas para preencher espaço ou simular prova social.
+## Tokens
 
-## Paleta
+- Fundo: #07101a
+- Superfície: #10283d
+- Texto: #f1f5f7
+- Texto secundário: #aab9c8
+- Ação: #e7b449
+- Leitura clara: #dce7f0
 
-- Papel: `#07101a`
-- Papel elevado: `#0b1724`
-- Superfície: `#102235`
-- Tinta: `#f1f5f7`
-- Tinta secundária: `#a8b4c1`
-- Regra: `#26394d`
-- Azul Aurevion: `#204d7d`
-- Fundo visual: `#0e2639`
-- Superfície visual: `#153550`
-- Superfície visual ativa: `#1b4262`
-- Ouro Aurevion: `#e4aa1b`
-- Ouro claro: `#ffd66b`
-- Estado positivo: `#75d6ae`
+Bricolage Grotesque em títulos, Instrument Sans no corpo e controles. Usar as variáveis fornecidas por next/font. A caixa alta e o espaçamento de letras ficam restritos à assinatura da marca.
 
-O ouro ocupa menos de 8% da tela e sempre indica direção, progresso ou ação.
+## Interação
 
-## Tipografia
+Menu visível no computador e menu compacto nativo no celular. Sem bloquear o scroll da página. Escape e clique fora fecham o menu. Navegação, contato e FAQ não dependem de JavaScript para serem utilizáveis.
 
-- Display: Bricolage Grotesque, 520–680, sempre romana.
-- Corpo: Instrument Sans, 400–600.
-- Rótulos: Instrument Sans, 600–650, sempre em caixa natural e sem espaçamento artificial.
-- IBM Plex Mono fica reservado a símbolos funcionais; não é usado em rótulos públicos.
-- Headlines usam quebras manuais e tracking negativo moderado; nunca itálico.
+Botões de orçamento nomeiam explicitamente o WhatsApp. Os links dos serviços preparam uma mensagem contextual. Nenhuma mensagem é enviada automaticamente. Telefone e suporte por email têm destinos próprios.
 
-## Formas
+FAQ com details/summary e entrada discreta de 200 ms, desativada quando há preferência por movimento reduzido. Sem autoplay, parallax, cursores artificiais ou animações que escondam o conteúdo.
 
-- Seções usam planos, ritmo tipográfico e linhas funcionais; não “cards” arredondados em série.
-- Diagramas usam retângulos simples, texto grande e setas inequívocas. Losangos, linhas diagonais soltas e microtextos são proibidos.
-- Mídia pode ter raio de 12 px; tags e estados podem ser totalmente circulares.
-- Frames falsos de navegador, telefone ou IDE são proibidos.
+## Restrições
 
-## Motion
-
-- Entrada: a tese da hero permanece estática para carregar sem distração.
-- Produto: vídeo de até cinco segundos, executado uma vez quando entra na tela, com três etapas sempre visíveis.
-- Troca de vista: wipe horizontal, não fade-up.
-- Hover: deslocamento de 2 px e mudança de regra; sem escala elástica.
-- Áreas calmas permanecem estáticas.
-- `prefers-reduced-motion`: vídeo mantido no poster estático e transições de até 120 ms.
-
-## CTA
-
-- Primário: ouro sólido, texto escuro, recorte diagonal, verbo específico.
-- Secundário: link tipográfico sublinhado pelo trilho azul.
-- Copy principal: “Quero construir meu projeto”.
-
-## Voz
-
-Confiante, concreta e direta. A Aurevion fala sobre operação, etapas, sistemas, integrações e trabalho manual — nunca sobre “transformar o futuro”, “revolucionar” ou “levar ao próximo nível”. Nenhuma métrica, cliente, depoimento ou resultado é inventado.
-
-## Critério de assinatura
-
-Sem o logo, o conjunto ainda deve ser reconhecível pelo Aurevion Flow: três etapas legíveis, superfícies azul-petróleo, tipografia direta e dourado usado somente como direção.
+Não inventar métricas, depoimentos, prazos ou preços. Não prometer integrações sem análise. Não restaurar os vídeos ou os diagramas repetidos sem pedido. Preservar os dados reais da Aurevion e não trocar pelo contato da TechReparos.

@@ -1,7 +1,6 @@
 import type { Metadata, Viewport } from "next";
 import {
   Bricolage_Grotesque,
-  IBM_Plex_Mono,
   Instrument_Sans,
 } from "next/font/google";
 import "./globals.css";
@@ -14,12 +13,6 @@ const bricolage = Bricolage_Grotesque({
 const instrument = Instrument_Sans({
   variable: "--font-instrument",
   subsets: ["latin"],
-});
-
-const plexMono = IBM_Plex_Mono({
-  variable: "--font-plex-mono",
-  subsets: ["latin"],
-  weight: ["400", "500"],
 });
 
 const siteUrl =
@@ -142,7 +135,7 @@ export default function RootLayout({
           </>
         ) : null}
       </head>
-      <body className={`${bricolage.variable} ${instrument.variable} ${plexMono.variable}`}>
+      <body className={`${bricolage.variable} ${instrument.variable}`}>
         {children}
       </body>
     </html>

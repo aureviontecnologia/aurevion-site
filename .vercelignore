@@ -1,0 +1,16 @@
+.git
+.vercel
+.agents
+.codex-runtime
+.wrangler
+.next
+.vinext
+.env*
+node_modules
+dist
+vercel-static
+outputs
+work
+coverage
+*.log
+*.tsbuildinfo

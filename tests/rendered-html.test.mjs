@@ -23,75 +23,63 @@ async function render() {
   );
 }
 
-test("server-renders the Aurevion conversion landing page", async () => {
+test("renders clear services and contact information without client JavaScript", async () => {
   const response = await render();
   assert.equal(response.status, 200);
   assert.match(response.headers.get("content-type") ?? "", /^text\/html\b/i);
-
   const html = await response.text();
-  assert.match(html, /<html[^>]*lang="pt-BR"/i);
-  assert.match(html, /<title>Aurevion \| Sites e sistemas para empresas<\/title>/i);
-  assert.match(html, /Sites que apresentam sua empresa/i);
-  assert.match(html, /Sites e sistemas para empresas/i);
-  assert.match(html, /aureviontecnologia@gmail\.com/i);
-  assert.doesNotMatch(html, /Tecnologia pensada para o seu negócio/i);
-  assert.match(html, /Um site que explica sua empresa/i);
-  assert.match(html, /Um sistema que acompanha o trabalho/i);
-  assert.match(html, /Veja na prática/i);
-  assert.match(html, /Informações espalhadas/i);
-  assert.match(html, /Trabalho em um só lugar/i);
-  assert.doesNotMatch(html, /Nota de transparência/i);
-  assert.doesNotMatch(html, /Interface demonstrativa/i);
-  assert.doesNotMatch(html, /Abriremos o WhatsApp/i);
-  assert.doesNotMatch(html, /Regras da operação|Pausar|Reproduzir|System motion/i);
-  assert.doesNotMatch(html, /Sistema organiza e encaminha/i);
-  assert.match(html, /aurevion-flow-v2\.mp4/i);
-  assert.match(html, /Trabalho da equipe/i);
-  assert.doesNotMatch(html, /aurevion-higgs|Higgsfield/i);
-  assert.match(html, /5527920026247/);
-  assert.doesNotMatch(html, /[—–‑]|e-mail|92002-6247/i);
-  assert.doesNotMatch(html, /codex-preview|Your site is taking shape|Building your site/i);
+  assert.match(html, /<html[^>]*lang="pt-BR"/);
+  assert.match(html, /<title>Aurevion \| Sites e sistemas para empresas<\/title>/);
+  assert.match(html, /Sites, sistemas/);
+  assert.match(html, /Automações/);
+  assert.match(html, /href="tel:\+5527920026247"/);
+  assert.match(html, /href="mailto:aureviontecnologia@gmail\.com/);
+  assert.match(html, /https:\/\/wa\.me\/5527920026247\?text=/);
+  assert.match(html, /Pedir orçamento no WhatsApp/);
+  assert.match(html, /techreparos-site\.jpg/);
+  assert.doesNotMatch(html, /<video\b|<form\b|about:invalid|<h[1-6][^>]*>\s*<\/h[1-6]>/);
+  assert.doesNotMatch(html, /Regras da operação|Sistema organiza e encaminha|codex-preview|Higgsfield/);
 });
 
-test("keeps accessibility, motion and starter cleanup explicit", async () => {
-  const [page, layout, css, packageJson] = await Promise.all([
+test("all internal links have real destinations and FAQ questions are server rendered", async () => {
+  const response = await render();
+  const html = await response.text();
+  const ids = new Set([...html.matchAll(/\bid="([^"]+)"/g)].map(match => match[1]));
+  for (const link of html.matchAll(/href="#([^"]+)"/g)) {
+    assert.ok(ids.has(link[1]), "Missing anchor: " + link[1]);
+  }
+  for (const id of ["inicio", "conteudo", "solucoes", "demonstracao", "processo", "duvidas", "contato"]) {
+    assert.ok(ids.has(id));
+  }
+  const faqs = [...html.matchAll(/<details class="faq-item">([\s\S]*?)<\/details>/g)];
+  assert.equal(faqs.length, 5);
+  for (const faq of faqs) {
+    assert.match(faq[1], /<summary><h3>[^<]+\?<\/h3>/);
+    assert.match(faq[1], /class="faq-answer"><p>[^<]+<\/p>/);
+  }
+});
+
+test("preserves accessible navigation, brand assets and privacy-safe event names", async () => {
+  const [page, layout, css] = await Promise.all([
     readFile(new URL("../app/page.tsx", import.meta.url), "utf8"),
     readFile(new URL("../app/layout.tsx", import.meta.url), "utf8"),
     readFile(new URL("../app/globals.css", import.meta.url), "utf8"),
-    readFile(new URL("../package.json", import.meta.url), "utf8"),
   ]);
-
-  assert.match(page, /MotionConfig[\s\S]*?reducedMotion="user"/);
   assert.match(page, /aria-label="Navegação principal"/);
-  assert.match(page, /id="site-navigation"/);
-  assert.match(page, /useReducedMotion/);
-  assert.match(page, /function DemoPanel/);
-  assert.doesNotMatch(page, /function AurevionFlow|flow-map|system-composition|system-connector/);
-  assert.match(page, /function FaqItem/);
-  assert.match(page, /aria-expanded=\{isOpen\}/);
-  assert.match(page, /animate=\{\{ height: isOpen \? "auto" : 0/);
-  assert.doesNotMatch(page, /project\.image|aurevion-higgs|Higgsfield/i);
-  assert.doesNotMatch(page, /videoPlaying|toggleVideo|film-control|site-cut|system-track|Regras da operação/i);
+  assert.match(page, /<details className="mobile-menu"/);
+  assert.match(page, /event\.key !== "Escape"/);
+  assert.match(page, /Pular para o conteúdo/);
   assert.match(page, /aurevion-symbol-transparent\.png/);
-  assert.match(page, /aurevion-flow-v2-poster\.webp/);
-  assert.doesNotMatch(page, /ThemeGlyph|theme-toggle|aurevion-theme|data-theme/);
-  assert.doesNotMatch(page, /[—–‑]|e-mail|92002-6247/i);
-  assert.doesNotMatch(page, /service-top|project-index|trust-points|number:\s*"0[1-9]"|window-dots|system-window-bar/);
-  assert.match(layout, /lang="pt-BR"/);
-  assert.match(layout, /themeColor:\s*"#07101a"/);
+  assert.match(page, /trackEvent\("whatsapp_click", \{ location \}\)/);
+  assert.match(page, /trackEvent\("contact_click"/);
+  assert.match(layout, /NEXT_PUBLIC_GA_ID/);
   assert.match(layout, /application\/ld\+json/);
-  assert.doesNotMatch(layout, /[—–‑]|92002-6247/i);
-  assert.match(css, /color-scheme:\s*dark/);
-  assert.doesNotMatch(css, /data-theme|theme-toggle|#f7f7f4|#ffffff/i);
   assert.match(css, /prefers-reduced-motion:\s*reduce/);
   assert.match(css, /:focus-visible/);
+  assert.match(css, /var\(--font-instrument\)/);
+  assert.match(css, /var\(--font-bricolage\)/);
   assert.doesNotMatch(css, /text-transform:\s*uppercase/);
-  assert.doesNotMatch(
-    css,
-    /\.section-label\s*\{[^}]*font-family:\s*var\(--font-mono\)/,
-  );
-  assert.doesNotMatch(css, /\.film-control|\.site-cut|\.system-track|\.integration-path/);
-  assert.match(packageJson, /"motion":/);
-  assert.doesNotMatch(packageJson, /react-loading-skeleton/);
-  await assert.rejects(access(new URL("../app/_sites-preview/SkeletonPreview.tsx", import.meta.url)));
+  assert.doesNotMatch(page, /DemoPanel|hero-film|menu-layer|[—–‑]|e-mail|92002-6247/);
+  await access(new URL("../public/techreparos-site.jpg", import.meta.url));
+  await access(new URL("../public/aurevion-symbol-transparent.png", import.meta.url));
 });

@@ -1,71 +1,53 @@
 # Aurevion
 
-Landing page institucional e de conversão da Aurevion, construída com React, Vinext, CSS responsivo, Motion e uma composição audiovisual criada em Remotion.
+Site institucional da Aurevion em React, Vinext e CSS responsivo.
 
-Repositório público: https://github.com/aureviontecnologia/aurevion-site
+Produção: https://aureviontecnologia.vercel.app/
+Repositório: https://github.com/aureviontecnologia/aurevion-site
 
-## Conteúdo e contato
+## Conteúdo
 
-- WhatsApp: `+55 27 92002-6247`
-- Link direto: `https://wa.me/5527920026247`
-- O formulário monta a mensagem e abre o WhatsApp para revisão antes do envio.
-- Os projetos exibidos são identificados como demonstrações conceituais. Não há clientes, métricas ou depoimentos inventados.
+A página apresenta sites, sistemas e automações, um projeto real da TechReparos, explicação da contratação, FAQ e contato. A revisão de setembro de 2026 removeu as demonstrações fictícias, o vídeo e o formulário obrigatório.
+
+- WhatsApp: (27) 92002 6247
+- Telefone: tel:+5527920026247
+- Suporte: aureviontecnologia@gmail.com
+- Os links de orçamento abrem uma conversa em nova aba. O usuário revisa e envia a mensagem no WhatsApp.
 
 ## Personalização
 
-### Cores
+- app/page.tsx: contatos, navegação, serviços, perguntas e eventos.
+- app/globals.css: tokens da paleta, layout e comportamento responsivo.
+- app/layout.tsx: fontes, metadados, dados estruturados e Analytics.
+- public/aurevion-symbol-transparent.png: símbolo do cabeçalho.
+- public/techreparos-site.jpg: captura real do projeto, feita em 14/09/2026.
+- public/og.png: imagem de compartilhamento.
+- design.md: direção visual atual.
 
-Os tokens principais estão no início de `app/globals.css`:
+Os vídeos antigos permanecem no repositório, mas não são carregados pela página. O site funciona sem JavaScript para leitura, FAQ, menu e links de contato; o JavaScript adiciona fechamento do menu e medição de eventos.
 
-- `--navy`: azul principal
-- `--navy-deep`: fundo escuro
-- `--gold`: CTA e destaques
-- `--bg`, `--surface`, `--ink`: superfícies e texto
-
-### Textos e serviços
-
-O conteúdo fica em `app/page.tsx`. Os arrays `services`, `projects` e `principles` controlam os cards. Substitua os projetos conceituais por cases reais somente quando houver autorização para publicar nomes, imagens e resultados.
-
-### Imagens e vídeo
-
-- `public/aurevion-logo.png`: assinatura original em PNG
-- `public/aurevion-symbol.png`: símbolo quadrado para avatar e favicon
-- `public/og.png`: imagem de compartilhamento social
-- `public/aurevion-hero.mp4`: composição audiovisual do hero
-- `public/aurevion-hero-poster.png`: poster exibido antes do vídeo carregar
-
-Mantenha a proporção do logo. As demonstrações da seção de projetos são interfaces em HTML/CSS e podem ser personalizadas em `app/page.tsx` e `app/globals.css`.
-
-### Analytics
-
-Copie `.env.example` para `.env.local` e informe o ID do Google Analytics. O script só é carregado quando `NEXT_PUBLIC_GA_ID` está definido. Avalie consentimento e política de privacidade conforme a LGPD antes de ativar rastreamento em produção.
-
-## Desenvolvimento
+## Desenvolvimento e verificações
 
 Requer Node.js 22.13 ou superior.
 
-```bash
+```sh
 npm install
 npm run dev
+npm test
+npx eslint app/page.tsx app/layout.tsx tests/rendered-html.test.mjs
+npm run build:vercel
 ```
 
-Em Windows PowerShell, se o script de ambiente do npm não for interpretado, execute o Vinext com `WRANGLER_LOG_PATH` definido na sessão.
+O build Vercel exporta os arquivos para vercel-static. Não editar esse diretório gerado.
+
+## Analytics
+
+O identificador fica na variável NEXT_PUBLIC_GA_ID, configurada no ambiente de publicação, nunca em credenciais compartilhadas. O layout mantém a integração existente com o Google Analytics.
+
+Eventos de contato: whatsapp_click, contact_click e cta_click. Cada um tem um propósito distinto; não somar os três como se fossem três pessoas. Um clique não confirma envio da mensagem nem venda. Também são medidos service_view, case_study_view, project_click, faq_open e scroll_depth. Os parâmetros não incluem nomes, emails ou mensagens dos visitantes.
 
 ## Publicação
 
-O site está publicado na Vercel em `aureviontecnologia.vercel.app`; o nome `aurevion.vercel.app` já estava ocupado. Para um domínio próprio no futuro, opções naturais são `aurevion.com.br` ou `aurevion.com` conforme disponibilidade.
+Usar o projeto Vercel já associado à pasta e o comando vercel deploy --prod --yes --scope aurevion-projects. Conferir o domínio oficial depois que o deploy ficar pronto, incluindo NEXT_PUBLIC_GA_ID, assets, navegação, FAQ e contatos. Não publicar automaticamente em outro provedor.
 
-## Checklist antes de publicar
-
-- [ ] Confirmar número do WhatsApp e testar todos os CTAs
-- [ ] Revisar serviços, área atendida e dados legais reais
-- [ ] Trocar cases conceituais por cases autorizados quando existirem
-- [ ] Adicionar depoimentos somente com texto, nome e foto aprovados
-- [ ] Definir `NEXT_PUBLIC_SITE_URL` com a URL final
-- [ ] Configurar `NEXT_PUBLIC_GA_ID` e consentimento LGPD, se necessário
-- [ ] Rodar `npm test` e validar o build de produção
-- [ ] Testar teclado, tema escuro permanente e preferência de movimento reduzido
-- [ ] Testar 375 px, 768 px, 1024 px e desktop
-- [ ] Verificar title, description, canonical, Open Graph, sitemap e robots
-- [ ] Conferir compressão do vídeo e das imagens
-- [ ] Conectar o domínio e habilitar HTTPS
+Antes de publicar, revisar o diff e testar celular, tablet, desktop, teclado e movimento reduzido. Não inserir segredos, arquivos de configuração local ou resultados de testes no Git.
