@@ -36,7 +36,16 @@ test("renders clear services and contact information without client JavaScript",
   assert.match(html, /href="mailto:aureviontecnologia@gmail\.com/);
   assert.match(html, /https:\/\/wa\.me\/5527920026247\?text=/);
   assert.match(html, /Pedir orçamento no WhatsApp/);
-  assert.match(html, /techreparos-site\.jpg/);
+  assert.match(html, /sistema-os-preview\.png/);
+  assert.match(html, /data-track-label="sistema-os"/);
+  assert.match(html, /<strong>Sistema OS<\/strong>/);
+  assert.match(html, /Conhecer o Sistema OS/);
+  assert.match(html, /href="https:\/\/sistemaosaurevion\.vercel\.app\/"/);
+  assert.match(html, /sistema-os-site\.png/);
+  assert.match(html, /data-r=""/);
+  assert.match(html, /class="leitura"/);
+  assert.match(html, /class="hero-cena"/);
+  assert.doesNotMatch(html, /href="https:\/\/techreparos\.vercel\.app\//);
   assert.doesNotMatch(html, /<video\b|<form\b|about:invalid|<h[1-6][^>]*>\s*<\/h[1-6]>/);
   assert.doesNotMatch(html, /Regras da operação|Sistema organiza e encaminha|codex-preview|Higgsfield/);
 });
@@ -80,6 +89,6 @@ test("preserves accessible navigation, brand assets and privacy-safe event names
   assert.match(css, /var\(--font-bricolage\)/);
   assert.doesNotMatch(css, /text-transform:\s*uppercase/);
   assert.doesNotMatch(page, /DemoPanel|hero-film|menu-layer|[—–‑]|e-mail|92002-6247/);
-  await access(new URL("../public/techreparos-site.jpg", import.meta.url));
+  await access(new URL("../public/sistema-os-preview.png", import.meta.url));
   await access(new URL("../public/aurevion-symbol-transparent.png", import.meta.url));
 });
